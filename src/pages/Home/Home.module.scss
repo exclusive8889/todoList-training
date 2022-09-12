@@ -1,0 +1,47 @@
+@mixin flex-center($justify){
+    display: flex;
+    align-items: center;
+    justify-content: $justify;
+    
+}
+.container{
+    & .wrap-categories{
+        width: 1200px;
+        margin: auto;
+        padding: 15px;
+        @include flex-center(space-around)
+    }
+}
+.pagination{
+    @include flex-center(center);
+    & li{
+        cursor: pointer;
+        & button[disabled]{
+            color: #666666;
+            // background-color: #cccccc;
+            // cursor:text !important;
+            // text-decoration: None !important; 
+        }
+    }
+    & a:hover{
+        background-color: bisque;
+    }
+}
+.page-item + .page-item{
+    margin-left: 5px;
+}
+.page-item a{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    @include flex-center(center);
+    cursor: pointer;
+}
+li{
+    width: 30px;
+    height: 30px;
+    margin: 0 10px 0 10px;
+}
+.active{
+    background-color: aqua;
+}
