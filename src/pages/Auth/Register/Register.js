@@ -22,7 +22,6 @@ function Register({ changeAuthMode }) {
         .required("Reqiued")
         .oneOf([Yup.ref("password"), null], "password must match"),
     }),
-    // onSubmit: (user) => {},
   });
 
   const handleRegister = (e) => {
