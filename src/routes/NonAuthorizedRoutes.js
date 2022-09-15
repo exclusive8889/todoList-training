@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "../component/Auth/Auth";
+import Login from "../pages/Auth/Auth";
 
 function NonAuthorizedRoutes() {
   return (

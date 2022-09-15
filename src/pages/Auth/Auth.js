@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Auth.css";
 import Signin from "./Login/Signin";
 import Register from "./Register/Register";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function Login(props) {
+export default function Login() {
   const [authMode, setAuthMode] = useState("signin");
   const changeAuthMode = () => {
     setAuthMode(authMode === "signin" ? "signup" : "signin");

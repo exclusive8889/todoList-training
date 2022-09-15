@@ -12,7 +12,6 @@ function Routes() {
     if (!accessToken) {
       navigate("/sign-in");
     }
-  
   }, [accessToken]);
   return (
     <>

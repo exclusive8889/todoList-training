@@ -29,7 +29,6 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signin.fulfilled, (state, action) => {
-        console.log("ful");
         state.login.currenUser = action.payload;
       })
       .addCase(signin.rejected, (state, action) => {
