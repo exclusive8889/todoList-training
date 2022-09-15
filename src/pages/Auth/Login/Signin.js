@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { loginUser } from "../../../utils/apiRequest";
-import { useFormik } from "formik";
 import * as Yup from "yup"
 import { useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { useFormik } from "formik";
 import "./SignIn.scss"
+
 function Signin({changeAuthMode}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -21,8 +21,7 @@ function Signin({changeAuthMode}) {
       loginUser(user, dispatch, navigate);
     }
   });
- 
-  const err =useSelector((state)=> state.auth.error)
+  const err =useSelector((state)=> state.auth.errorLogin)
   
   return (
     <div className="Auth-form-container">

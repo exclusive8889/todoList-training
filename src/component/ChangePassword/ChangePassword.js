@@ -15,9 +15,9 @@ const cx = classNames.bind(styles);
 function ChangePassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
   const [usename, setusername] = useState("");
   const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

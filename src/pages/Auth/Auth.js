@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./Auth.css";
+import React, { useState } from "react";
 import Signin from "./Login/Signin";
 import Register from "./Register/Register";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Login() {
   const [authMode, setAuthMode] = useState("signin");
