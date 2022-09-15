@@ -1,10 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
-import { ApiClient } from "../../request/request";
-import { loginSuccess } from "../../stores/slice/authSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 import { logout } from "../../utils/apiRequest";
 import ChangePassword from "../../component/ChangePassword/ChangePassword";
 
