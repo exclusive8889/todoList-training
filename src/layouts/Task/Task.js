@@ -1,6 +1,7 @@
-import React, { useMemo, useState ,memo} from "react";
-import { useSelector } from "react-redux";
+import React, { useMemo, useState, memo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
+import { updateTask } from "../../stores/slice/taskSlice";
 import {
   MDBBadge,
   MDBBtn,
@@ -9,21 +10,42 @@ import {
   MDBTableBody,
 } from "mdb-react-ui-kit";
 function Tasks({ data }) {
+  const [status,setStatus]=useState(data.status)
+  
+  const dispatch = useDispatch();
+  const [dataTask, setDataTask] = useState({
+    title: data.title,
+    categoryIds: [data?.categories.map((item, index) => item.id)],
+    status: data.status,
+  });
   const [defaultCate, setDefaultCate] = useState(
     data?.categories.map((item, index) => ({
-      value: item.name,
+      value: item.id,
       label: item.name,
     }))
   );
+  console.log(defaultCate)
   const listCategories = useSelector((state) => state?.categories?.list[0]);
   const listcate = useMemo(() => {
-    // console.log('tinh lai')
     const list = listCategories?.map((item, index) => ({
-      value: item.name,
+      value: item.id,
       label: item.name,
     }));
     return list;
   }, [listCategories]);
+
+  // useEffect(() => {
+  //   setDataTask({
+  //     ...dataTask,
+  //     categoryIds: defaultCate.map((list) => list.value),
+  //   });
+  // }, [defaultCate]);
+  // useEffect(() => {
+  //   // dispatch(updateTask({ id: data.id, datatask: dataTask}));
+  // }, [dataTask]);
+  const handleAddCate=()=>{
+    // console.log(defaultCate)
+  }
   return (
     <>
       <tr>
@@ -44,12 +66,16 @@ function Tasks({ data }) {
             options={listcate}
             className="basic-multi-select"
             classNamePrefix="select"
+            onChange={handleAddCate}
           />
         </td>
         <td> {data?.createdAt}</td>
         <td>{data?.updatedAt}</td>
         <td>
-          <input type="checkbox"></input>
+          <input
+            type="checkbox"
+            checked={status==="COMPLETED"}
+          ></input>
         </td>
         <td>
           <span>

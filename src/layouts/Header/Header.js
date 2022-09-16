@@ -1,9 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { ApiClient } from "../../request/request";
+import { useDispatch,useSelector } from "react-redux";
+import { useState,useEffect } from "react";
 import { logout } from "../../utils/apiRequest";
+import { loginSuccess } from "../../stores/slice/authSlice";
 import ChangePassword from "../../component/ChangePassword/ChangePassword";
 
 import Tippy from "@tippyjs/react/headless";
@@ -14,6 +16,12 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 function Header() {
+  const dispatch=useDispatch()
+  useEffect(() => {
+    ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
+      dispatch(loginSuccess(res.data));
+    });
+  }, []);
   const user = useSelector((state) => state.auth.login.currenUser);
   const [visible, setVisible] = useState(false);
   const show = () => setVisible(true);

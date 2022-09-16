@@ -25,9 +25,10 @@ const taskSlice = createSlice({
         );
       })
       .addCase(updateTask.fulfilled, (state, action) => {
-        state.items[0].map((item) => {
-           (item.id === action.payload.idtask) && (item.title = action.payload.title);
-        });
+        // state.items[0].map((item) => {
+        //    (item.id === action.payload.idtask) && (item.title = action.payload.title);
+        // });
+        console.log('ful')
       });
   },
 });
@@ -53,11 +54,7 @@ export const removeTask = createAsyncThunk(
 export const updateTask = createAsyncThunk(
   "cates/updateTask",
   async (dataUpdate) => {
-    await ApiClient.patch(`/api/tasks/${dataUpdate.idtask}`, {
-      title: dataUpdate.title,
-      categoryIds: [dataUpdate.categoryIds],
-      status: "IN_PROGRESS",
-    });
+    await ApiClient.patch(`/api/tasks/${dataUpdate.id}`, dataUpdate.datatask);
     return dataUpdate;
   }
 );
