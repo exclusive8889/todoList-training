@@ -9,8 +9,7 @@ function AuthorizedRoutes({ isAuthenticated = true }) {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData =async()=>{
-      // await dispatch(signin())
-      await dispatch(getTasks());
+      // await dispatch(getTasks());
       await dispatch(getCategories());
     }
     fetchData()

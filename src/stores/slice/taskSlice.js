@@ -13,28 +13,34 @@ const taskSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTasks.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+        state.items=action.payload;
       })
-      .addCase(addTask.fulfilled, (state, action) => {
-        state.items[0].push(action.payload);
-      })
-      .addCase(removeTask.fulfilled, (state, action) => {
-        state.items[0].splice(
-          state.items[0].findIndex((todo) => todo.id === action.payload),
-          1
-        );
-      })
-      .addCase(updateTask.fulfilled, (state, action) => {
-        // state.items[0].map((item) => {
-        //    (item.id === action.payload.idtask) && (item.title = action.payload.title);
-        // });
-        console.log('ful')
-      });
+      // .addCase(addTask.fulfilled, (state, action) => {
+      //   state.items[0].push(action.payload);
+      // })
+      // .addCase(removeTask.fulfilled, (state, action) => {
+      //   state.items[0].splice(
+      //     state.items[0].findIndex((todo) => todo.id === action.payload),
+      //     1
+      //   );
+      // })
+      // .addCase(updateTask.fulfilled, (state, action) => {
+      //   state.items[0].map((item) => {
+      //      (item.id === action.payload.idtask) && (item.title = action.payload.title);
+      //   });
+      //   console.log('ful')
+      // });
   },
 });
 
-export const getTasks = createAsyncThunk("cates/getTasks", async () => {
-  const res = await ApiClient.get("/api/tasks");
+export const getTasks = createAsyncThunk("cates/getTasks", async (data) => {
+  console.log(data.currentPage)
+  const res = await ApiClient.get("/api/tasks",{params:{
+    limit:3,
+    page:data.currentPage
+  }}
+  );
+  // console.log(res.data.items)
   return res.data.items;
 });
 export const addTask = createAsyncThunk(

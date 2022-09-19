@@ -8,10 +8,11 @@ import {
 } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
 import Tasks from "../Task/Task";
+import Loading from "../../component/Loading/Loading";
 
 function TableTask() {
-  const tasks = useSelector((state) => state.taskSlice.items[0]);
-  // console.log(tasks);
+  const tasks = useSelector((state) => state.taskSlice?.items);
+  console.log(tasks)
   return (
     <MDBTable bordered>
       <MDBTableHead>
@@ -25,12 +26,17 @@ function TableTask() {
           <th scope="col">Option</th>
         </tr>
       </MDBTableHead>
-      <MDBTableBody>
+      {
+        !tasks ? <Loading/> : (
+          <MDBTableBody>
         {tasks?.map((item) => (
           <Tasks key={item.id} data={item} />
         ))}
       </MDBTableBody>
+        )
+      }
+      
     </MDBTable>
   );
 }
-export default memo(TableTask)
+export default memo(TableTask);

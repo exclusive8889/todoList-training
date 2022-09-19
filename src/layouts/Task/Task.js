@@ -10,21 +10,20 @@ import {
   MDBTableBody,
 } from "mdb-react-ui-kit";
 function Tasks({ data }) {
-  const [status,setStatus]=useState(data.status)
-  
   const dispatch = useDispatch();
-  const [dataTask, setDataTask] = useState({
+  // const [status,setStatus]=useState(data.status)
+  const [dataUpdateTask, setDataUpdateTask] = useState({
     title: data.title,
     categoryIds: [data?.categories.map((item, index) => item.id)],
     status: data.status,
   });
+
   const [defaultCate, setDefaultCate] = useState(
     data?.categories.map((item, index) => ({
       value: item.id,
       label: item.name,
     }))
   );
-  console.log(defaultCate)
   const listCategories = useSelector((state) => state?.categories?.list[0]);
   const listcate = useMemo(() => {
     const list = listCategories?.map((item, index) => ({
@@ -34,18 +33,21 @@ function Tasks({ data }) {
     return list;
   }, [listCategories]);
 
+  useEffect(() => {
+    console.log('dèault')
+    setDataUpdateTask({
+      ...dataUpdateTask,
+      categoryIds: defaultCate.map((list) => list.value),
+    });
+    
+  }, [defaultCate]);
+  
   // useEffect(() => {
-  //   setDataTask({
-  //     ...dataTask,
-  //     categoryIds: defaultCate.map((list) => list.value),
-  //   });
-  // }, [defaultCate]);
-  // useEffect(() => {
-  //   // dispatch(updateTask({ id: data.id, datatask: dataTask}));
-  // }, [dataTask]);
-  const handleAddCate=()=>{
-    // console.log(defaultCate)
-  }
+  //   // console.log('up')
+  //   if (dataUpdateTask.status == "COMPLETED") return;
+  //   dispatch(updateTask({ id: data.id, datatask: dataUpdateTask }));
+  // }, [dataUpdateTask]);
+  console.log(dataUpdateTask);
   return (
     <>
       <tr>
@@ -66,16 +68,13 @@ function Tasks({ data }) {
             options={listcate}
             className="basic-multi-select"
             classNamePrefix="select"
-            onChange={handleAddCate}
+            onChange={setDefaultCate}
           />
         </td>
         <td> {data?.createdAt}</td>
         <td>{data?.updatedAt}</td>
         <td>
-          <input
-            type="checkbox"
-            checked={status==="COMPLETED"}
-          ></input>
+          <input type="checkbox" checked={data.status === "COMPLETED"}></input>
         </td>
         <td>
           <span>
