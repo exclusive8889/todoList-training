@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import {
   MDBBadge,
   MDBBtn,
@@ -8,11 +8,16 @@ import {
 } from "mdb-react-ui-kit";
 import { useSelector } from "react-redux";
 import Tasks from "../Task/Task";
-import Loading from "../../component/Loading/Loading";
 
 function TableTask() {
+  const [rerender,setRerender] =useState(true)
   const tasks = useSelector((state) => state.taskSlice?.items);
-  console.log(tasks)
+  // console.log('re-task')
+  const handleUpdateTask=(data)=>{
+    console.log(data)
+    // dispatch(updateTask({ id: data.id, datatask: dataUpdateTask.current }));
+    // setRerender(!rerender)
+  }
   return (
     <MDBTable bordered>
       <MDBTableHead>
@@ -26,17 +31,14 @@ function TableTask() {
           <th scope="col">Option</th>
         </tr>
       </MDBTableHead>
-      {
-        !tasks ? <Loading/> : (
-          <MDBTableBody>
+      <MDBTableBody>
         {tasks?.map((item) => (
-          <Tasks key={item.id} data={item} />
+          <Tasks key={item.id} data={item} 
+          handleUpdateTask={handleUpdateTask}
+          />
         ))}
       </MDBTableBody>
-        )
-      }
-      
     </MDBTable>
   );
 }
-export default memo(TableTask);
+export default memo(TableTask)

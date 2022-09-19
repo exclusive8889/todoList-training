@@ -1,4 +1,4 @@
-import React, { useMemo, useState, memo, useEffect } from "react";
+import React, { useMemo, useState, memo, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
 import { updateTask } from "../../stores/slice/taskSlice";
@@ -9,14 +9,18 @@ import {
   MDBTableHead,
   MDBTableBody,
 } from "mdb-react-ui-kit";
-function Tasks({ data }) {
+function Tasks({ data,handleUpdateTask }) {
   const dispatch = useDispatch();
+  const listCategories = useSelector((state) => state?.categories?.list[0]);
   // const [status,setStatus]=useState(data.status)
-  const [dataUpdateTask, setDataUpdateTask] = useState({
+  const dataUpdateTask = useRef({
     title: data.title,
     categoryIds: [data?.categories.map((item, index) => item.id)],
     status: data.status,
   });
+
+
+
 
   const [defaultCate, setDefaultCate] = useState(
     data?.categories.map((item, index) => ({
@@ -24,7 +28,6 @@ function Tasks({ data }) {
       label: item.name,
     }))
   );
-  const listCategories = useSelector((state) => state?.categories?.list[0]);
   const listcate = useMemo(() => {
     const list = listCategories?.map((item, index) => ({
       value: item.id,
@@ -33,21 +36,36 @@ function Tasks({ data }) {
     return list;
   }, [listCategories]);
 
+
+
+
+
   useEffect(() => {
-    console.log('dèault')
-    setDataUpdateTask({
-      ...dataUpdateTask,
+    dataUpdateTask.current = {
+      ...dataUpdateTask.current,
       categoryIds: defaultCate.map((list) => list.value),
-    });
-    
+    };
   }, [defaultCate]);
   
-  // useEffect(() => {
-  //   // console.log('up')
-  //   if (dataUpdateTask.status == "COMPLETED") return;
-  //   dispatch(updateTask({ id: data.id, datatask: dataUpdateTask }));
-  // }, [dataUpdateTask]);
-  console.log(dataUpdateTask);
+  useEffect(() => {
+
+    handleUpdateTask(dataUpdateTask.current)
+    // if (dataUpdateTask.current.status == "COMPLETED") return;
+    // dispatch(updateTask({ id: data.id, datatask: dataUpdateTask.current }));
+  }, [dataUpdateTask.current]);
+
+  // const handleCompleted = () => {
+    
+  //   data.status == "COMPLETED"
+  //     ? (dataUpdateTask.current = {
+  //         ...dataUpdateTask.current,
+  //         status: "IN_PROGRESS",
+  //       })
+  //     : (dataUpdateTask.current = {
+  //         ...dataUpdateTask.current,
+  //         status: "COMPLETED",
+  //       });
+  // };
   return (
     <>
       <tr>
@@ -74,7 +92,11 @@ function Tasks({ data }) {
         <td> {data?.createdAt}</td>
         <td>{data?.updatedAt}</td>
         <td>
-          <input type="checkbox" checked={data.status === "COMPLETED"}></input>
+          <input
+            type="checkbox"
+            checked={data.status === "COMPLETED"}
+            // onChange={handleCompleted}
+          ></input>
         </td>
         <td>
           <span>

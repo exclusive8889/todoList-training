@@ -24,17 +24,17 @@ const taskSlice = createSlice({
       //     1
       //   );
       // })
-      // .addCase(updateTask.fulfilled, (state, action) => {
-      //   state.items[0].map((item) => {
-      //      (item.id === action.payload.idtask) && (item.title = action.payload.title);
-      //   });
-      //   console.log('ful')
-      // });
+      .addCase(updateTask.fulfilled, (state, action) => {
+        // state.items[0].map((item) => {
+        //    (item.id === action.payload.idtask) && (item.title = action.payload.title);
+        // });
+        // console.log('ful')
+      });
   },
 });
 
 export const getTasks = createAsyncThunk("cates/getTasks", async (data) => {
-  console.log(data.currentPage)
+  // console.log(data.currentPage)  
   const res = await ApiClient.get("/api/tasks",{params:{
     limit:3,
     page:data.currentPage
