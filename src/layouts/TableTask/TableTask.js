@@ -6,18 +6,20 @@ import {
   MDBTableHead,
   MDBTableBody,
 } from "mdb-react-ui-kit";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Tasks from "../Task/Task";
+import { updateTask } from "../../stores/slice/taskSlice";
 
 function TableTask() {
-  const [rerender,setRerender] =useState(true)
+  const dispatch = useDispatch();
+  const [rerender, setRerender] = useState(true);
   const tasks = useSelector((state) => state.taskSlice?.items);
-  // console.log('re-task')
-  const handleUpdateTask=(data)=>{
-    console.log(data)
-    // dispatch(updateTask({ id: data.id, datatask: dataUpdateTask.current }));
-    // setRerender(!rerender)
-  }
+  console.log("reander taskkkkkk");
+  const handleUpdateTask = (data, id) => {
+    // if (data.status == "COMPLETED" ) return;
+    dispatch(updateTask({ id: id, datatask: data }));
+    setRerender(!rerender);
+  };
   return (
     <MDBTable bordered>
       <MDBTableHead>
@@ -33,12 +35,14 @@ function TableTask() {
       </MDBTableHead>
       <MDBTableBody>
         {tasks?.map((item) => (
-          <Tasks key={item.id} data={item} 
-          handleUpdateTask={handleUpdateTask}
+          <Tasks
+            key={item.id}
+            data={item}
+            handleUpdateTask={handleUpdateTask}
           />
         ))}
       </MDBTableBody>
     </MDBTable>
   );
 }
-export default memo(TableTask)
+export default memo(TableTask);

@@ -9,19 +9,21 @@ import {
   MDBTableHead,
   MDBTableBody,
 } from "mdb-react-ui-kit";
-function Tasks({ data,handleUpdateTask }) {
+function Tasks({ data, handleUpdateTask }) {
+  
+  // console.log(data)
   const dispatch = useDispatch();
+  const [cateOfTask, setCateOfTask] = useState();
+  const [dataUpdateTask, setDataUpdateTask] = useState(
+  //   {
+  //   title: data.title,
+  //   categoryIds: data.categories.map((list) => list.value),
+  //   status: data.status,
+  // }
+  
+  );
   const listCategories = useSelector((state) => state?.categories?.list[0]);
-  // const [status,setStatus]=useState(data.status)
-  const dataUpdateTask = useRef({
-    title: data.title,
-    categoryIds: [data?.categories.map((item, index) => item.id)],
-    status: data.status,
-  });
-
-
-
-
+  const [status, setStatus] = useState(data.status);
   const [defaultCate, setDefaultCate] = useState(
     data?.categories.map((item, index) => ({
       value: item.id,
@@ -29,6 +31,7 @@ function Tasks({ data,handleUpdateTask }) {
     }))
   );
   const listcate = useMemo(() => {
+    if (data.status == "COMPLETED") return [];
     const list = listCategories?.map((item, index) => ({
       value: item.id,
       label: item.name,
@@ -36,36 +39,25 @@ function Tasks({ data,handleUpdateTask }) {
     return list;
   }, [listCategories]);
 
-
-
-
-
   useEffect(() => {
-    dataUpdateTask.current = {
-      ...dataUpdateTask.current,
-      categoryIds: defaultCate.map((list) => list.value),
-    };
-  }, [defaultCate]);
-  
+    if (!cateOfTask) return;
+    setDataUpdateTask({
+      // ...dataUpdateTask,
+      title: data.title,
+      categoryIds: cateOfTask.map((list) => list.value),
+      status: data.status, 
+    });
+
+  }, [cateOfTask]);
+  console.log(dataUpdateTask)
   useEffect(() => {
+    if (!dataUpdateTask ) return;
+    handleUpdateTask(dataUpdateTask, data.id);
+  }, [dataUpdateTask]);
 
-    handleUpdateTask(dataUpdateTask.current)
-    // if (dataUpdateTask.current.status == "COMPLETED") return;
-    // dispatch(updateTask({ id: data.id, datatask: dataUpdateTask.current }));
-  }, [dataUpdateTask.current]);
-
-  // const handleCompleted = () => {
-    
-  //   data.status == "COMPLETED"
-  //     ? (dataUpdateTask.current = {
-  //         ...dataUpdateTask.current,
-  //         status: "IN_PROGRESS",
-  //       })
-  //     : (dataUpdateTask.current = {
-  //         ...dataUpdateTask.current,
-  //         status: "COMPLETED",
-  //       });
-  // };
+  const handleCompleted = () => {
+    status == "COMPLETED" ? setStatus("IN_PROGRESS") : setStatus("COMPLETED");
+  };
   return (
     <>
       <tr>
@@ -86,7 +78,7 @@ function Tasks({ data,handleUpdateTask }) {
             options={listcate}
             className="basic-multi-select"
             classNamePrefix="select"
-            onChange={setDefaultCate}
+            onChange={setCateOfTask}
           />
         </td>
         <td> {data?.createdAt}</td>
@@ -94,8 +86,8 @@ function Tasks({ data,handleUpdateTask }) {
         <td>
           <input
             type="checkbox"
-            checked={data.status === "COMPLETED"}
-            // onChange={handleCompleted}
+            checked={status == "COMPLETED"}
+            onChange={handleCompleted}
           ></input>
         </td>
         <td>
