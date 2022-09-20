@@ -1,7 +1,19 @@
 import styles from "./Filter.module.scss";
 import classNames from "classnames/bind";
+import { useDispatch } from "react-redux";
+import { addTask } from "../../stores/slice/taskSlice";
 const cx = classNames.bind(styles);
 function Filter() {
+  const dispatch =useDispatch()
+  const handleAddtask=()=>{
+      dispatch(addTask({
+        title:'1',
+        categoryIds: [
+          "0634d6a5-0c7c-4f9c-a987-2468e3987d3d",
+          "afb2152a-90fa-48df-a605-737ced47a6a1"
+        ]
+      }))
+    }
     return ( 
     <div className={cx("wraper")}>
        <div className={cx("search")}>
@@ -24,7 +36,7 @@ function Filter() {
           
         </div>
         <div className={cx("optinon-filter")}>
-         <button>1</button>
+         <button onClick={handleAddtask}>Add Task</button>
          <button>1</button>
          <button>1</button>
         </div>

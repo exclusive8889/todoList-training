@@ -11,11 +11,6 @@ import { useEffect, useState } from "react";
 const cx = classNames.bind(styles);
 
 function Home() {
-  const dispatch=useDispatch();
-  const [currentPage,setCurrenPage]=useState(1)
-  useEffect(()=>{
-    dispatch(getTasks({currentPage:currentPage}));
-  },[currentPage])
   return (
     <>
       <Header  />
@@ -23,10 +18,7 @@ function Home() {
         <Filter/>
         <TableTask/>
       </div>
-      <span onClick={()=>setCurrenPage(1)}>1</span>
-      <span onClick={()=>setCurrenPage(2)}>2</span>
-      <span onClick={()=>setCurrenPage(3)}>3</span>
-      <span onClick={()=>setCurrenPage(4)}>4</span>
+      
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useMemo, useState, memo, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
-import { updateTask } from "../../stores/slice/taskSlice";
+import { updateTask,removeTask } from "../../stores/slice/taskSlice";
 import {
   MDBBadge,
   MDBBtn,
@@ -10,54 +10,56 @@ import {
   MDBTableBody,
 } from "mdb-react-ui-kit";
 function Tasks({ data, handleUpdateTask }) {
-  
-  // console.log(data)
-  const dispatch = useDispatch();
+  const dispatch=useDispatch()
   const [cateOfTask, setCateOfTask] = useState();
-  const [dataUpdateTask, setDataUpdateTask] = useState(
-  //   {
-  //   title: data.title,
-  //   categoryIds: data.categories.map((list) => list.value),
-  //   status: data.status,
-  // }
-  
-  );
-  const listCategories = useSelector((state) => state?.categories?.list[0]);
   const [status, setStatus] = useState(data.status);
+  const listCategories = useSelector((state) => state?.categories?.list[0]);
+  const [dataUpdateTask, setDataUpdateTask] = useState({
+    title: data.title,
+    categoryIds: data.categories.map((list) => list.id),
+    status: data.status,
+  });
   const [defaultCate, setDefaultCate] = useState(
-    data?.categories.map((item, index) => ({
+    data?.categories.map((item, index,handleDeleteTask) => ({
       value: item.id,
       label: item.name,
     }))
   );
   const listcate = useMemo(() => {
-    if (data.status == "COMPLETED") return [];
+    if (status == "COMPLETED") return [];
     const list = listCategories?.map((item, index) => ({
       value: item.id,
       label: item.name,
     }));
     return list;
-  }, [listCategories]);
+  }, [status]);
 
   useEffect(() => {
-    if (!cateOfTask) return;
+    if (!cateOfTask || status == "COMPLETED") return;
     setDataUpdateTask({
-      // ...dataUpdateTask,
-      title: data.title,
+      ...dataUpdateTask,
       categoryIds: cateOfTask.map((list) => list.value),
-      status: data.status, 
     });
-
   }, [cateOfTask]);
-  console.log(dataUpdateTask)
+
   useEffect(() => {
-    if (!dataUpdateTask ) return;
+    setDataUpdateTask({
+      ...dataUpdateTask,
+      status: status,
+    });
+  }, [status]);
+
+  useEffect(() => {
+    if (!dataUpdateTask || status == "COMPLETED") return;
     handleUpdateTask(dataUpdateTask, data.id);
   }, [dataUpdateTask]);
 
   const handleCompleted = () => {
     status == "COMPLETED" ? setStatus("IN_PROGRESS") : setStatus("COMPLETED");
   };
+  // const handleDeleteTask =(id)=>{
+  //   dispatch(removeTask(id))
+  // }
   return (
     <>
       <tr>
@@ -78,6 +80,7 @@ function Tasks({ data, handleUpdateTask }) {
             options={listcate}
             className="basic-multi-select"
             classNamePrefix="select"
+            isDisabled={status == "COMPLETED"}
             onChange={setCateOfTask}
           />
         </td>
@@ -96,7 +99,9 @@ function Tasks({ data, handleUpdateTask }) {
               Edit
             </MDBBtn>
           </span>
-          <MDBBtn color="danger" rounded size="sm">
+          <MDBBtn color="danger" rounded size="sm" onClick={()=>{
+            // handleDeleteTask(data.id)
+          }}>
             Delete
           </MDBBtn>
         </td>

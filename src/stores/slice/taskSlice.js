@@ -15,12 +15,13 @@ const taskSlice = createSlice({
       .addCase(getTasks.fulfilled, (state, action) => {
         state.items=action.payload;
       })
-      // .addCase(addTask.fulfilled, (state, action) => {
-      //   state.items[0].push(action.payload);
-      // })
+      .addCase(addTask.fulfilled, (state, action) => {
+        // getTasks()
+        // state.items.push(action.payload);
+      })
       // .addCase(removeTask.fulfilled, (state, action) => {
-      //   state.items[0].splice(
-      //     state.items[0].findIndex((todo) => todo.id === action.payload),
+      //   state.items.splice(
+      //     state.items.findIndex((todo) => todo.id === action.payload),
       //     1
       //   );
       // })
@@ -34,13 +35,11 @@ const taskSlice = createSlice({
 });
 
 export const getTasks = createAsyncThunk("cates/getTasks", async (data) => {
-  // console.log(data.currentPage)  
   const res = await ApiClient.get("/api/tasks",{params:{
     limit:3,
     page:data.currentPage
   }}
   );
-  // console.log(res.data.items)
   return res.data.items;
 });
 export const addTask = createAsyncThunk(
