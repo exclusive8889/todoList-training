@@ -19,10 +19,10 @@ function Header() {
   const dispatch=useDispatch()
   useEffect(() => {
     ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
-      dispatch(loginSuccess(res.data));
+      dispatch(loginSuccess(res.data.data));
     });
   }, []);
-  const user = useSelector((state) => state.auth.login.currenUser);
+  const user = useSelector((state) => state.auth.login?.currenUser);
   const [visible, setVisible] = useState(false);
   const show = () => setVisible(true);
   const hide = () => setVisible(false);

@@ -1,7 +1,7 @@
 import React, { useMemo, useState, memo, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
-import { updateTask,removeTask } from "../../stores/slice/taskSlice";
+import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
 import {
   MDBBadge,
   MDBBtn,
@@ -9,18 +9,18 @@ import {
   MDBTableHead,
   MDBTableBody,
 } from "mdb-react-ui-kit";
-function Tasks({ data, handleUpdateTask }) {
-  const dispatch=useDispatch()
+function Tasks({ data, handleUpdateTask, currentPage }) {
+  const dispatch = useDispatch();
   const [cateOfTask, setCateOfTask] = useState();
   const [status, setStatus] = useState(data.status);
-  const listCategories = useSelector((state) => state?.categories?.list[0]);
+  const listCategories = useSelector((state) => state?.categories?.list);
   const [dataUpdateTask, setDataUpdateTask] = useState({
     title: data.title,
     categoryIds: data.categories.map((list) => list.id),
     status: data.status,
   });
   const [defaultCate, setDefaultCate] = useState(
-    data?.categories.map((item, index,handleDeleteTask) => ({
+    data?.categories.map((item, index) => ({
       value: item.id,
       label: item.name,
     }))
@@ -50,16 +50,23 @@ function Tasks({ data, handleUpdateTask }) {
   }, [status]);
 
   useEffect(() => {
-    if (!dataUpdateTask || status == "COMPLETED") return;
+    if (!dataUpdateTask) return;
     handleUpdateTask(dataUpdateTask, data.id);
   }, [dataUpdateTask]);
 
   const handleCompleted = () => {
     status == "COMPLETED" ? setStatus("IN_PROGRESS") : setStatus("COMPLETED");
+    // setDataUpdateTask({
+    //   ...dataUpdateTask,
+    //   status: status,
+    // });
   };
-  // const handleDeleteTask =(id)=>{
-  //   dispatch(removeTask(id))
-  // }
+  const handleDeleteTask = (id) => {
+    dispatch(removeTask(id)).then(() => {
+      dispatch(getTasks({ currentPage: currentPage }));
+    });
+  };
+  console.log('re-rendẻ')
   return (
     <>
       <tr>
@@ -99,9 +106,14 @@ function Tasks({ data, handleUpdateTask }) {
               Edit
             </MDBBtn>
           </span>
-          <MDBBtn color="danger" rounded size="sm" onClick={()=>{
-            // handleDeleteTask(data.id)
-          }}>
+          <MDBBtn
+            color="danger"
+            rounded
+            size="sm"
+            onClick={() => {
+              handleDeleteTask(data.id);
+            }}
+          >
             Delete
           </MDBBtn>
         </td>

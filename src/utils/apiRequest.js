@@ -6,12 +6,12 @@ import { signin } from "../stores/slice/authSlice";
 export const loginUser = async (user, dispatch, navigate) => {
   ApiClient.post("/auth/login", user)
     .then((res) => {
-      dispatch(loginSuccess(res.data));
-      handleStorageToken(res.data.token, res.data.id);
+      dispatch(loginSuccess(res.data.data));
+      handleStorageToken(res.data.data.accessToken, res.data.data.id);
       navigate("/");
     })
     .catch((error) => {
-      dispatch(loginFailed(error.response.data.message));
+      dispatch(loginFailed(error.response.data.error.message));
     });
 };
 

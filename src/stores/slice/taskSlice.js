@@ -4,6 +4,7 @@ const taskSlice = createSlice({
   name: "tasks",
   initialState: {
     items: [],
+    loading:true,
   },
   reducers: {
     getTasks: (state, action) => {
@@ -13,40 +14,49 @@ const taskSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTasks.fulfilled, (state, action) => {
-        state.items=action.payload;
+        state.items = action.payload;
+        state.loading = false;
       })
-      .addCase(addTask.fulfilled, (state, action) => {
-        // getTasks()
+      .addCase(getTasks.pending, (state) => {
+        state.loading = true;
+      })
+      // .addCase(addTask.fulfilled, (state, action) => {
+
         // state.items.push(action.payload);
-      })
+      // })
       // .addCase(removeTask.fulfilled, (state, action) => {
       //   state.items.splice(
       //     state.items.findIndex((todo) => todo.id === action.payload),
       //     1
       //   );
       // })
-      .addCase(updateTask.fulfilled, (state, action) => {
+      // .addCase(updateTask.fulfilled, (state, action) => {
         // state.items[0].map((item) => {
         //    (item.id === action.payload.idtask) && (item.title = action.payload.title);
         // });
         // console.log('ful')
-      });
+      // });
   },
 });
 
 export const getTasks = createAsyncThunk("cates/getTasks", async (data) => {
-  const res = await ApiClient.get("/api/tasks",{params:{
-    limit:3,
-    page:data.currentPage
-  }}
-  );
-  return res.data.items;
+  const res = await ApiClient.get("/api/tasks", {
+    params: {
+      limit: 3,
+      page: data.currentPage,
+    },
+  });
+  return res.data.data;
 });
 export const addTask = createAsyncThunk(
   "cates/addTask",
   async (task, { rejectWithValue }) => {
-    const res = await ApiClient.post("/api/tasks", task);
-    return res.data;
+    try {
+      const res = await ApiClient.post("/api/tasks", task);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 export const removeTask = createAsyncThunk(

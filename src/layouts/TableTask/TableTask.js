@@ -1,4 +1,4 @@
-import React, { memo, useState,useEffect } from "react";
+import React, { memo, useState, useEffect } from "react";
 import {
   MDBBadge,
   MDBBtn,
@@ -9,25 +9,23 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import Tasks from "../Task/Task";
 import { updateTask } from "../../stores/slice/taskSlice";
-import { getTasks,removeTask } from "../../stores/slice/taskSlice";
+import { getTasks, removeTask } from "../../stores/slice/taskSlice";
 
 function TableTask() {
   const dispatch = useDispatch();
-  const [rerender, setRerender] = useState(true);
   const [currentPage, setCurrenPage] = useState(1);
+  const { items, Loading } = useSelector((state) => state?.taskSlice);
   useEffect(() => {
-    dispatch(getTasks({ currentPage:currentPage}));
-  }, [currentPage]);
-  
-  const tasks = useSelector((state) => state?.taskSlice?.items);
-  // console.log(tasks)
-  const handleUpdateTask = (data, id) => {
-    dispatch(updateTask({ id: id, datatask: data }));
-    setRerender(!rerender);
+    dispatch(getTasks({ currentPage: currentPage }));
+  }, []);
+
+  const handleUpdateTask = async (data, id) => {
+    dispatch(updateTask({ id: id, datatask: data })).then(() => {
+      dispatch(getTasks({ currentPage: currentPage }));
+    });
   };
-  const handleDeleteTask=(id)=>{
-    dispatch(removeTask(id))
-  }
+
+  if (Loading) return <p>Loading...</p>;
   return (
     <MDBTable bordered>
       <MDBTableHead>
@@ -42,12 +40,12 @@ function TableTask() {
         </tr>
       </MDBTableHead>
       <MDBTableBody>
-        {tasks?.map((item) => (
+        {items?.map((item) => (
           <Tasks
             key={item.id}
             data={item}
             handleUpdateTask={handleUpdateTask}
-            handleDeleteTask={handleDeleteTask}
+            currentPage={currentPage}
           />
         ))}
       </MDBTableBody>

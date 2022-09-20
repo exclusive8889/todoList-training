@@ -20,7 +20,7 @@ const cateSlice=createSlice({
     extraReducers:(builder)=>{
         builder
             .addCase(getCategories.fulfilled,(state,action)=>{
-                state.list.push(action.payload.items);
+                state.list=action.payload;
             })
             .addCase(getCategories.rejected,(state,action)=>{
                 console.log("rejected");
@@ -32,7 +32,7 @@ const cateSlice=createSlice({
 export const getCategories=createAsyncThunk('cates/getCategories',async(_, {rejectWithValue })=>{
     try {
         const res =await ApiClient.get("/api/categories")
-        return res.data
+        return res.data.data
     } catch (error) {
         return rejectWithValue(error)
     }
