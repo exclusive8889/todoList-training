@@ -5,11 +5,15 @@ const taskSlice = createSlice({
   initialState: {
     items: [],
     loading:true,
+    removeTasks:[]
   },
   reducers: {
-    getTasks: (state, action) => {
-      state.items = action.payload;
-    },
+    // getTasks: (state, action) => {
+    //   state.items = action.payload;
+    // },
+    removeTasks:(state,action)=>{
+      state.removeTasks.push(action.payload)
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -39,7 +43,7 @@ const taskSlice = createSlice({
   },
 });
 
-export const getTasks = createAsyncThunk("cates/getTasks", async (data) => {
+export const getTasks = createAsyncThunk("tasks/getTasks", async (data) => {
   const res = await ApiClient.get("/api/tasks", {
     params: {
       limit: 3,
@@ -49,7 +53,7 @@ export const getTasks = createAsyncThunk("cates/getTasks", async (data) => {
   return res.data.data;
 });
 export const addTask = createAsyncThunk(
-  "cates/addTask",
+  "tasks/addTask",
   async (task, { rejectWithValue }) => {
     try {
       const res = await ApiClient.post("/api/tasks", task);
@@ -60,14 +64,14 @@ export const addTask = createAsyncThunk(
   }
 );
 export const removeTask = createAsyncThunk(
-  "cates/removeTask",
+  "tasks/removeTask",
   async (idtask) => {
     await ApiClient.delete(`/api/tasks/${idtask}`);
     return idtask;
   }
 );
 export const updateTask = createAsyncThunk(
-  "cates/updateTask",
+  "tasks/updateTask",
   async (dataUpdate) => {
     await ApiClient.patch(`/api/tasks/${dataUpdate.id}`, dataUpdate.datatask);
     return dataUpdate;

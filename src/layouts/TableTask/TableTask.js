@@ -11,19 +11,24 @@ import Tasks from "../Task/Task";
 import { updateTask } from "../../stores/slice/taskSlice";
 import { getTasks, removeTask } from "../../stores/slice/taskSlice";
 
+
 function TableTask() {
   const dispatch = useDispatch();
   const [currentPage, setCurrenPage] = useState(1);
+  const [romoveTask,setRemoveTasks] =useState([])
   const { items, Loading } = useSelector((state) => state?.taskSlice);
   useEffect(() => {
     dispatch(getTasks({ currentPage: currentPage }));
   }, []);
 
-  const handleUpdateTask = async (data, id) => {
-    dispatch(updateTask({ id: id, datatask: data })).then(() => {
-      dispatch(getTasks({ currentPage: currentPage }));
-    });
-  };
+  // const reTasks=(idTasks)=>{
+  //   dispatch(removeTasks(idTasks))
+  // }
+  // const handleUpdateTask = async (data, id) => {
+  //   await dispatch(updateTask({ id: id, datatask: data })).then(() => {
+  //     dispatch(getTasks({ currentPage: currentPage }));
+  //   });
+  // };
 
   if (Loading) return <p>Loading...</p>;
   return (
@@ -44,7 +49,8 @@ function TableTask() {
           <Tasks
             key={item.id}
             data={item}
-            handleUpdateTask={handleUpdateTask}
+            // handleUpdateTask={handleUpdateTask}
+            // reTasks={reTasks}
             currentPage={currentPage}
           />
         ))}
