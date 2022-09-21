@@ -15,6 +15,7 @@ function Tasks({ data, currentPage }) {
   const dispatch = useDispatch();
   const inputEditRef = useRef();
   // const status = useRef(data.status);
+  const paramTask=useSelector((state)=>state.filterSlice.paramTask)
   const listCategories = useSelector((state) => state?.categories?.list);
   const [editTask, setEdittask] = useState(false);
   const [cateOfTask, setCateOfTask] = useState();
@@ -60,7 +61,7 @@ function Tasks({ data, currentPage }) {
   const handleUpdateTask = async (data, id) => {
     const response = await dispatch(updateTask({ id: id, datatask: data }));
     if (updateTask.fulfilled.match(response)) {
-      dispatch(getTasks({ currentPage: currentPage }));
+      dispatch(getTasks(paramTask));
     } else {
       alert("error");
     }
@@ -80,7 +81,7 @@ function Tasks({ data, currentPage }) {
   const handleDeleteTask = async (id) => {
     const response = await dispatch(removeTask(id));
     if (removeTask.fulfilled.match(response)) {
-      await dispatch(getTasks({ currentPage: currentPage }));
+      await dispatch(getTasks(paramTask));
     } else {
       alert("error");
     }
