@@ -1,4 +1,4 @@
-import React, { useMemo, useState, memo, useEffect, useRef } from "react";
+import React, { useMemo, useState, memo, useEffect, useRef, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
 import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
@@ -8,15 +8,17 @@ function Tasks({ data, currentPage }) {
   const dispatch = useDispatch();
   const inputEditRef = useRef();
   const listCategories = useSelector((state) => state?.categories?.list);
+  const [editTask, setEdittask] = useState(false);
   const [cateOfTask, setCateOfTask] = useState();
   const [valueInputTask, setValueInputTask] = useState(data.title);
   const [status, setStatus] = useState(data.status);
-  const [editTask, setEdittask] = useState(false);
-  const [dataUpdateTask, setDataUpdateTask] = useState({
+  const [dataUpdateTask, setDataUpdateTask] = useState(
+    {
     title: data.title,
     categoryIds: data.categories.map((list) => list.id),
     status: data.status,
-  });
+  }
+  );
   const [defaultCate, setDefaultCate] = useState(
     data?.categories.map((item, index) => ({
       value: item.id,
@@ -24,6 +26,7 @@ function Tasks({ data, currentPage }) {
     }))
   );
   const listcate = useMemo(() => {
+    // console.log('tungre')
     if (status == "COMPLETED") return [];
     const list = listCategories?.map((item, index) => ({
       value: item.id,
@@ -31,6 +34,7 @@ function Tasks({ data, currentPage }) {
     }));
     return list;
   }, [status]);
+
 
   useEffect(() => {
     if (!cateOfTask || status == "COMPLETED") return;
@@ -46,6 +50,9 @@ function Tasks({ data, currentPage }) {
       status: status,
     });
   }, [status]);
+
+
+
   const updateTitleTask = () => {
     setDataUpdateTask({
       ...dataUpdateTask,
@@ -55,7 +62,6 @@ function Tasks({ data, currentPage }) {
   };
 
   const handleUpdateTask = async (data, id) => {
-    console.log("upsta");
     const response = await dispatch(updateTask({ id: id, datatask: data }));
     if (updateTask.fulfilled.match(response)) {
       dispatch(getTasks({ currentPage: currentPage }));
@@ -79,11 +85,11 @@ function Tasks({ data, currentPage }) {
   //   dispatch(taskSlice.actions.removeTasks(id));
   // };
 
-  useEffect(() => {
-    if (!dataUpdateTask) return;
-    handleUpdateTask(dataUpdateTask, data.id);
-  }, [dataUpdateTask]);
-
+  //  useEffect(() => {
+  //   if (!dataUpdateTask) return;
+  //   handleUpdateTask(dataUpdateTask, data.id);
+  // }, [dataUpdateTask]);
+  console.log('re-render')
   return (
     <>
       <tr>

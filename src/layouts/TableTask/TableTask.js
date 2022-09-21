@@ -10,25 +10,22 @@ import { useSelector, useDispatch } from "react-redux";
 import Tasks from "../Task/Task";
 import { updateTask } from "../../stores/slice/taskSlice";
 import { getTasks, removeTask } from "../../stores/slice/taskSlice";
+// import { Pagination } from "react-bootstrap";
+import PaginatedItems from "../../component/Pagination/Pagination";
 
 
 function TableTask() {
   const dispatch = useDispatch();
-  const [currentPage, setCurrenPage] = useState(1);
-  const [romoveTask,setRemoveTasks] =useState([])
-  const { items, Loading } = useSelector((state) => state?.taskSlice);
+  const { items, Loading,meta} = useSelector((state) => state?.taskSlice);
+  // console.log(meta)
+  const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     dispatch(getTasks({ currentPage: currentPage }));
-  }, []);
-
-  // const reTasks=(idTasks)=>{
-  //   dispatch(removeTasks(idTasks))
-  // }
-  // const handleUpdateTask = async (data, id) => {
-  //   await dispatch(updateTask({ id: id, datatask: data })).then(() => {
-  //     dispatch(getTasks({ currentPage: currentPage }));
-  //   });
-  // };
+  }, [currentPage]);
+  // pagination;
+  const setPage=(numPage)=>{
+    setCurrentPage(numPage)
+  }
 
   if (Loading) return <p>Loading...</p>;
   return (
@@ -49,17 +46,15 @@ function TableTask() {
           <Tasks
             key={item.id}
             data={item}
-            // handleUpdateTask={handleUpdateTask}
-            // reTasks={reTasks}
             currentPage={currentPage}
           />
         ))}
       </MDBTableBody>
-      <div>
-        <span onClick={() => setCurrenPage(1)}>1</span>
-        <span onClick={() => setCurrenPage(2)}>2</span>
-        <span onClick={() => setCurrenPage(3)}>3</span>
-        <span onClick={() => setCurrenPage(4)}>4</span>
+      <div >
+      {/* <span onClick={() => setCurrenPage(1)}>1</span> */}
+        {/* <span onClick={() => setCurrenPage(2)}>2</span> */}
+        {/* <PaginatedItems itemsPerPage={3}/> */}
+        <PaginatedItems setPage={setPage}/>
       </div>
     </MDBTable>
   );

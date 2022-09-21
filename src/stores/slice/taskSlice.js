@@ -4,6 +4,7 @@ const taskSlice = createSlice({
   name: "tasks",
   initialState: {
     items: [],
+    meta:[],
     loading:true,
     removeTasks:[]
   },
@@ -18,7 +19,8 @@ const taskSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTasks.fulfilled, (state, action) => {
-        state.items = action.payload;
+        state.items = action.payload.data;
+        state.meta=action.payload.meta;
         state.loading = false;
       })
       .addCase(getTasks.pending, (state) => {
@@ -50,7 +52,7 @@ export const getTasks = createAsyncThunk("tasks/getTasks", async (data) => {
       page: data.currentPage,
     },
   });
-  return res.data.data;
+  return res.data;
 });
 export const addTask = createAsyncThunk(
   "tasks/addTask",
