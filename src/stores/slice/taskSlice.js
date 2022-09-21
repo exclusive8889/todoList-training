@@ -48,7 +48,7 @@ const taskSlice = createSlice({
 export const getTasks = createAsyncThunk("tasks/getTasks", async (data) => {
   const res = await ApiClient.get("/api/tasks", {
     params: {
-      limit: 3,
+      limit: data.limit,
       page: data.currentPage,
     },
   });
