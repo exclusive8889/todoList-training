@@ -12,21 +12,38 @@ import { updateTask } from "../../stores/slice/taskSlice";
 import { getTasks, removeTask } from "../../stores/slice/taskSlice";
 // import { Pagination } from "react-bootstrap";
 import PaginatedItems from "../../component/Pagination/Pagination";
-
+import taskSlice from "../../stores/slice/taskSlice";
 
 function TableTask() {
   const dispatch = useDispatch();
+  const paramTask=useSelector((state)=>state.filterSlice.paramTask)
   const { items, Loading,meta} = useSelector((state) => state?.taskSlice);
+  const [pendingRemoveTasks,setPendingRemoveTask]= useState([])
   // console.log(meta)
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
-    dispatch(getTasks({ currentPage: currentPage }));
+    dispatch(getTasks(paramTask));
   }, [currentPage]);
   // pagination;
   const setPage=(numPage)=>{
     setCurrentPage(numPage)
   }
+  const reTasks = (id) => {
+    setPendingRemoveTask((pre)=>{
+      const isChecked=pendingRemoveTasks.includes(id);
+      if(isChecked) {
+        return pendingRemoveTasks.filter((item)=>item !== id)
+      }
+      else{
+        return  [...pre,id]
+      }
+   })
+    // dispatch(taskSlice.actions.removeTasks(id));
+  };
 
+  useEffect(()=>{
+    dispatch(taskSlice.actions.removeTasks(pendingRemoveTasks));
+  },[pendingRemoveTasks])
   if (Loading) return <p>Loading...</p>;
   return (
     <MDBTable bordered>
@@ -47,6 +64,8 @@ function TableTask() {
             key={item.id}
             data={item}
             currentPage={currentPage}
+            reTasks={reTasks}
+            pendingRemoveTasks={pendingRemoveTasks}
           />
         ))}
       </MDBTableBody>

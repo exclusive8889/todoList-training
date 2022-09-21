@@ -11,12 +11,14 @@ import Select from "react-select";
 import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
 import { MDBBtn } from "mdb-react-ui-kit";
 import taskSlice from "../../stores/slice/taskSlice";
-function Tasks({ data, currentPage }) {
+function Tasks({ data, currentPage,reTasks,pendingRemoveTasks }) {
   const dispatch = useDispatch();
+  const paramTask=useSelector((state)=>state.filterSlice.paramTask)
   const inputEditRef = useRef();
   // const status = useRef(data.status);
-  const paramTask=useSelector((state)=>state.filterSlice.paramTask)
+  // console.log(paramTask)
   const listCategories = useSelector((state) => state?.categories?.list);
+  
   const [editTask, setEdittask] = useState(false);
   const [cateOfTask, setCateOfTask] = useState();
   const [valueInputTask, setValueInputTask] = useState(data.title);
@@ -79,6 +81,7 @@ function Tasks({ data, currentPage }) {
     await handleUpdateTask(dataUpdateTask.current, data.id);
   };
   const handleDeleteTask = async (id) => {
+    // const dispatch=useDispatch()
     const response = await dispatch(removeTask(id));
     if (removeTask.fulfilled.match(response)) {
       await dispatch(getTasks(paramTask));
@@ -87,23 +90,32 @@ function Tasks({ data, currentPage }) {
     }
   };
   // const reTasks = (id) => {
-  //   dispatch(taskSlice.actions.removeTasks(id));
+  //   setPendingRemoveTask((pre)=>[...pre,id])
+  //   // dispatch(taskSlice.actions.removeTasks(id));
   // };
-
+  // console.log(pendingRemoveTasks)
   //  useEffect(() => {
   //   if (dataUpdateTask.current.status=="COMPLETED") return;
   //   handleUpdateTask(dataUpdateTask.current, data.id);
   // }, [dataUpdateTask.current.categoryIds]);
   // console.log('re-render')
+
+  // console.log(pendingRemoveTasks)
+  // useEffect(()=>{
+
+  // },[pendingRemoveTasks])
   return (
     <>
       <tr>
         <td>
           <input
             type="checkbox"
-            // onChange={() => {
-            //   reTasks(data.id);
-            // }}
+            checked={pendingRemoveTasks.includes(data.id)}
+            onChange={() => {
+              // setPendingRemoveTask(!pendingRemoveTasks)
+              
+              reTasks(data.id);
+            }}
           ></input>
         </td>
         <td>

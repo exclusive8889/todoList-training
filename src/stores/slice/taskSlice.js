@@ -13,7 +13,7 @@ const taskSlice = createSlice({
     //   state.items = action.payload;
     // },
     removeTasks:(state,action)=>{
-      state.removeTasks.push(action.payload)
+      state.removeTasks=action.payload
     }
   },
   extraReducers: (builder) => {
@@ -46,11 +46,9 @@ const taskSlice = createSlice({
 });
 
 export const getTasks = createAsyncThunk("tasks/getTasks", async (data) => {
+  console.log(data)
   const res = await ApiClient.get("/api/tasks", {
-    params: {
-      limit: data.limit,
-      page: data.currentPage,
-    },
+    params: data,
   });
   return res.data;
 });

@@ -1,10 +1,14 @@
 import styles from "./Filter.module.scss";
 import classNames from "classnames/bind";
-import { useDispatch } from "react-redux";
-import { addTask,getTasks } from "../../stores/slice/taskSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addTask, getTasks,removeTask } from "../../stores/slice/taskSlice";
+import filterSlice from "../../stores/slice/searchSlice";
 const cx = classNames.bind(styles);
 function Filter() {
   const dispatch = useDispatch();
+  const paramTask = useSelector((state) => state.filterSlice.paramTask);
+  const listRemoveMultiTask=useSelector((state)=>state.taskSlice.removeTasks)
+  // console.log(listRemoveMultiTask)
   const handleAddtask = () => {
     dispatch(
       addTask({
@@ -16,8 +20,21 @@ function Filter() {
       })
     );
   };
-  const handleNumberOfTask=async (numbers)=>{
-    await dispatch(getTasks({ limit:numbers,currentPage: 1 }));
+  const handleNumberOfTask = async (numbers) => {
+    await dispatch(filterSlice.actions.limitTask(Number(numbers)));
+    await dispatch(getTasks({ ...paramTask, limit: Number(numbers) }));
+    // await dispatch(getTasks({ limit:numbers,page: 1 }));
+  };
+  const handleRemoveMultiTasks=async()=>{
+    await listRemoveMultiTask.forEach(async(id) => {
+      const response = await dispatch(removeTask(id));
+      if (removeTask.fulfilled.match(response)) {
+        
+      } else {
+        alert("error");
+      }
+    });
+    await dispatch(getTasks(paramTask));
   }
   return (
     <div className={cx("wraper")}>
@@ -43,15 +60,20 @@ function Filter() {
         <button onClick={handleAddtask}>Add Task</button>
         <div>
           <label for="cars">Number of tasks:</label>
-          <select name="cars" id="cars" onChange={(e)=>{
-            handleNumberOfTask(e.target.value)
-          }}>
+          <select
+            name="cars"
+            id="cars"
+            onChange={(e) => {
+              handleNumberOfTask(e.target.value);
+            }}
+          >
+            <option value={3}>...</option>
             <option value={10}>10</option>
             <option value={6}>6</option>
             <option value={3}>3</option>
           </select>
         </div>
-        <button>1</button>
+        <button onClick={handleRemoveMultiTasks}>Delete</button>
       </div>
     </div>
   );
