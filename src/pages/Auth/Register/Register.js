@@ -32,10 +32,10 @@ function Register({ changeAuthMode }) {
     })
       .then((res) => {
         res.status === 201 ? alert("Success") : alert("failed");
-        navigate("/");
+        navigate("/sign-in");
       })
       .catch((error) => {
-        dispatch(registerFailed(error.response.data.message));
+        dispatch(registerFailed(error.response.data.error.message));
       });
   };
   const errorRegister =useSelector((state)=> state.auth.errorRegister)

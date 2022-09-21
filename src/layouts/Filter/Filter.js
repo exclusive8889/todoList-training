@@ -46,9 +46,9 @@ function Filter() {
           <select name="cars" id="cars" onChange={(e)=>{
             handleNumberOfTask(e.target.value)
           }}>
-            <option value={3}>3</option>
-            <option value={6}>6</option>
             <option value={10}>10</option>
+            <option value={6}>6</option>
+            <option value={3}>3</option>
           </select>
         </div>
         <button>1</button>

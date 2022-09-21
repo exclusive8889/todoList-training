@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { ApiClient } from "../../request/request";
-import { loginUser } from "../../utils/apiRequest";
+import { loginUser, logout } from "../../utils/apiRequest";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -37,7 +37,8 @@ function ChangePassword() {
         if (res.status === 200) {
           alert("Success");
           handleClose();
-          loginUser(newUser, dispatch, navigate);
+          logout()
+          // loginUser(newUser, dispatch, navigate);
         }
       })
       .catch((err) => {});
