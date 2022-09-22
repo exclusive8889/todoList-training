@@ -58,16 +58,12 @@ function TableTask() {
           <Tasks
             key={item.id}
             data={item}
-            currentPage={currentPage}
             reTasks={reTasks}
             pendingRemoveTasks={pendingRemoveTasks}
           />
         ))}
       </MDBTableBody>
       <div>
-        {/* <span onClick={() => setCurrenPage(1)}>1</span> */}
-        {/* <span onClick={() => setCurrenPage(2)}>2</span> */}
-        {/* <PaginatedItems itemsPerPage={3}/> */}
         <PaginatedItems setPage={setPage} />
       </div>
     </MDBTable>

@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 import { ApiClient } from "../../request/request";
-import { useDispatch,useSelector } from "react-redux";
-import { useState,useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { logout } from "../../utils/apiRequest";
 import { loginSuccess } from "../../stores/slice/authSlice";
 import ChangePassword from "../../component/ChangePassword/ChangePassword";
@@ -16,7 +16,7 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 function Header() {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
       dispatch(loginSuccess(res.data.data));

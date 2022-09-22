@@ -4,24 +4,20 @@ import React, {
   memo,
   useEffect,
   useRef,
-  useCallback,
 } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import Select from "react-select";
-import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
 import { MDBBtn } from "mdb-react-ui-kit";
+import { useSelector, useDispatch } from "react-redux";
+import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
 import taskSlice from "../../stores/slice/taskSlice";
-function Tasks({ data, currentPage,reTasks,pendingRemoveTasks }) {
+function Tasks({ data,reTasks,pendingRemoveTasks }) {
   const dispatch = useDispatch();
   const paramTask=useSelector((state)=>state.filterSlice.paramTask)
-  const inputEditRef = useRef();
-  // const status = useRef(data.status);
-  // console.log(paramTask)
   const listCategories = useSelector((state) => state?.categories?.list);
-  
   const [editTask, setEdittask] = useState(false);
   const [cateOfTask, setCateOfTask] = useState();
   const [valueInputTask, setValueInputTask] = useState(data.title);
+  const inputEditRef = useRef();
   const dataUpdateTask = useRef({
     title: data.title,
     categoryIds: data.categories.map((list) => list.id),
@@ -99,11 +95,6 @@ function Tasks({ data, currentPage,reTasks,pendingRemoveTasks }) {
   //   handleUpdateTask(dataUpdateTask.current, data.id);
   // }, [dataUpdateTask.current.categoryIds]);
   // console.log('re-render')
-
-  // console.log(pendingRemoveTasks)
-  // useEffect(()=>{
-
-  // },[pendingRemoveTasks])
   return (
     <>
       <tr>
@@ -113,7 +104,6 @@ function Tasks({ data, currentPage,reTasks,pendingRemoveTasks }) {
             checked={pendingRemoveTasks.includes(data.id)}
             onChange={() => {
               // setPendingRemoveTask(!pendingRemoveTasks)
-              
               reTasks(data.id);
             }}
           ></input>
