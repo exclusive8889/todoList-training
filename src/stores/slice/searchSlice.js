@@ -3,16 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const filterSlice=createSlice({
     name:'filters',
     initialState:{
-        searchText:'',
         paramTask:{
             limit:3,
             page:1
         }
     },
     reducers:{
-        changgSearchText:(state,action)=>{
-            state.searchText=action.payload
-        },
         limitTask:(state,action)=>{
             state.paramTask.limit=action.payload
         },

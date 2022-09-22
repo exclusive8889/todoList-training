@@ -1,31 +1,30 @@
-import React, { memo, useState, useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import {
-  MDBBadge,
-  MDBBtn,
   MDBTable,
   MDBTableHead,
   MDBTableBody,
 } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
+import { getTasks } from "../../stores/slice/taskSlice";
 import Tasks from "../Task/Task";
-import { updateTask } from "../../stores/slice/taskSlice";
-import { getTasks, removeTask } from "../../stores/slice/taskSlice";
-// import { Pagination } from "react-bootstrap";
-import PaginatedItems from "../../component/Pagination/Pagination";
 import taskSlice from "../../stores/slice/taskSlice";
 import Loading from "../../component/Loading/Loading";
+import PaginatedItems from "../../component/Pagination/Pagination";
+
 function TableTask() {
   const dispatch = useDispatch();
   const paramTask = useSelector((state) => state.filterSlice.paramTask);
   const { items, loading, meta } = useSelector((state) => state?.taskSlice);
   const [pendingRemoveTasks, setPendingRemoveTask] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
   useEffect(() => {
     dispatch(getTasks(paramTask));
   }, [currentPage]);
   const setPage = (numPage) => {
     setCurrentPage(numPage);
   };
+
   const reTasks = (id) => {
     setPendingRemoveTask((pre) => {
       const isChecked = pendingRemoveTasks.includes(id);
@@ -36,6 +35,7 @@ function TableTask() {
       }
     });
   };
+
   useEffect(() => {
     dispatch(taskSlice.actions.removeTasks(pendingRemoveTasks));
   }, [pendingRemoveTasks]);

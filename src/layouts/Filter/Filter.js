@@ -8,18 +8,21 @@ import { useRef, useState, useMemo } from "react";
 import styles from "./Filter.module.scss";
 import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
+
 function Filter() {
   const dispatch = useDispatch();
+  const [selectedOption, setSelectedOption] = useState([]);
+  const listCategories = useSelector((state) => state?.categories?.list);
+  const paramTask = useSelector((state) => state?.filterSlice?.paramTask);
+  const listRemoveMultiTask = useSelector(
+    (state) => state?.taskSlice?.removeTasks
+  );
+
   const valueAddtask = useRef({
     title: "",
     categoryIds: [],
   });
-  const listCategories = useSelector((state) => state?.categories?.list);
-  const paramTask = useSelector((state) => state.filterSlice.paramTask);
-  const [selectedOption, setSelectedOption] = useState([]);
-  const listRemoveMultiTask = useSelector(
-    (state) => state.taskSlice.removeTasks
-  );
+
   const handleAddtask = async () => {
     valueAddtask.current.categoryIds = selectedOption.map((item) => item.value);
     const response = await dispatch(addTask(valueAddtask.current));
@@ -29,21 +32,23 @@ function Filter() {
       alert("error");
     }
   };
+
   const handleNumberOfTask = async (numbers) => {
     await dispatch(filterSlice.actions.limitTask(Number(numbers)));
     await dispatch(getTasks({ ...paramTask, limit: Number(numbers) }));
-    // await dispatch(getTasks({ limit:numbers,page: 1 }));
   };
+
   const handleRemoveMultiTasks = async () => {
-    await listRemoveMultiTask.forEach(async (id) => {
-      const response = await dispatch(removeTask(id));
+    for (let i = 0; i < listRemoveMultiTask.length; i++) {
+      const response = await dispatch(removeTask(listRemoveMultiTask[i]));
       if (removeTask.fulfilled.match(response)) {
       } else {
         alert("error");
       }
-    });
+    }
     await dispatch(getTasks(paramTask));
   };
+
   const handleFilterStatus = async (status) => {
     // const response =await dispatch(filterSlice.actions.setStatus(status))
     // if(response>0) await dispatch(getTasks(paramTask));
@@ -52,6 +57,7 @@ function Filter() {
       await dispatch(getTasks({ ...paramTask, status: status }));
     }
   };
+
   const listcate = useMemo(() => {
     const list = listCategories?.map((item, index) => ({
       value: item.id,

@@ -22,23 +22,24 @@ function ChangePassword() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const user = {
+    username: usename,
+    newPassword: password,
+  };
+  const newUser = {
+    username: usename,
+    password: password,
+  };
   const handleChangePassword = async (e) => {
     e.preventDefault();
-    const user = {
-      username: usename,
-      newPassword: password,
-    };
-    const newUser = {
-      username: usename,
-      password: password,
-    };
+    console.log(user)
     await ApiClient.patch(`/api/users/${localStorage.getItem("id")}`, user)
       .then((res) => {
         if (res.status === 200) {
           alert("Success");
           handleClose();
-          logout()
-          // loginUser(newUser, dispatch, navigate);
+          // logout()
+          loginUser(newUser, dispatch, navigate);
         }
       })
       .catch((err) => {});

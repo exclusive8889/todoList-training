@@ -33,6 +33,7 @@ function Register({ changeAuthMode }) {
       .then((res) => {
         res.status === 201 ? alert("Success") : alert("failed");
         navigate("/sign-in");
+        changeAuthMode()
       })
       .catch((error) => {
         dispatch(registerFailed(error.response.data.error.message));
