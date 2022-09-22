@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask, getTasks, removeTask } from "../../stores/slice/taskSlice";
 import filterSlice from "../../stores/slice/searchSlice";
+import Search from "../../component/Search/Search";
 const cx = classNames.bind(styles);
 function Filter() {
   const dispatch = useDispatch();
@@ -38,6 +39,8 @@ function Filter() {
     await dispatch(getTasks(paramTask));
   };
   const handleFilterStatus=async(status)=>{
+      // const response =await dispatch(filterSlice.actions.setStatus(status))
+      // if(response>0) await dispatch(getTasks(paramTask));
       if(status=='') await dispatch(getTasks(paramTask));
       else{
         await dispatch(getTasks({ ...paramTask, status:status}));
@@ -45,25 +48,8 @@ function Filter() {
   }
   return (
     <div className={cx("wraper")}>
-      <div className={cx("search")}>
-        <select
-          className={cx("search-select", "search--height")}
-          // onChange={handlefilterCate}
-        >
-          <option value="">All</option>
-          {/* {listCategories?.map((item) => (
-              <option key={item.id} value={item.name}>
-                {item.name}
-              </option>
-            ))} */}
-        </select>
-        <input
-          placeholder="Search task"
-          className={cx("search-input", "search--height")}
-          // onChange={handleSearchTextTask}
-        ></input>
-      </div>
       
+      <Search/>
       <div className={cx("optinon-filter")}>
         <button onClick={handleAddtask}>Add Task</button>
         <div>

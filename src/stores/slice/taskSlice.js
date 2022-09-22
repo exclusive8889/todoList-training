@@ -9,9 +9,6 @@ const taskSlice = createSlice({
     removeTasks:[]
   },
   reducers: {
-    // getTasks: (state, action) => {
-    //   state.items = action.payload;
-    // },
     removeTasks:(state,action)=>{
       state.removeTasks=action.payload
     }
@@ -26,27 +23,10 @@ const taskSlice = createSlice({
       .addCase(getTasks.pending, (state) => {
         state.loading = true;
       })
-      // .addCase(addTask.fulfilled, (state, action) => {
-
-        // state.items.push(action.payload);
-      // })
-      // .addCase(removeTask.fulfilled, (state, action) => {
-      //   state.items.splice(
-      //     state.items.findIndex((todo) => todo.id === action.payload),
-      //     1
-      //   );
-      // })
-      // .addCase(updateTask.fulfilled, (state, action) => {
-        // state.items[0].map((item) => {
-        //    (item.id === action.payload.idtask) && (item.title = action.payload.title);
-        // });
-        // console.log('ful')
-      // });
   },
 });
 
 export const getTasks = createAsyncThunk("tasks/getTasks", async (data) => {
-  console.log(data)
   const res = await ApiClient.get("/api/tasks", {
     params: data,
   });
