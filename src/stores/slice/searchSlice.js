@@ -18,6 +18,14 @@ const filterSlice=createSlice({
         },
         setCurrentPage:(state,action)=>{
             state.paramTask.page=action.payload
+        },
+        setStatus:(state,action)=>{
+            if(action.payload == '') {
+                delete state.paramTask.status
+            }   
+            else{
+                state.paramTask=({...state.paramTask,status:action.payload})
+            }
         }
     }
 })

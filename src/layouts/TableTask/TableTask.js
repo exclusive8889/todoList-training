@@ -13,38 +13,33 @@ import { getTasks, removeTask } from "../../stores/slice/taskSlice";
 // import { Pagination } from "react-bootstrap";
 import PaginatedItems from "../../component/Pagination/Pagination";
 import taskSlice from "../../stores/slice/taskSlice";
-
+import Loading from "../../component/Loading/Loading";
 function TableTask() {
   const dispatch = useDispatch();
-  const paramTask=useSelector((state)=>state.filterSlice.paramTask)
-  const { items, Loading,meta} = useSelector((state) => state?.taskSlice);
-  const [pendingRemoveTasks,setPendingRemoveTask]= useState([])
-  // console.log(meta)
+  const paramTask = useSelector((state) => state.filterSlice.paramTask);
+  const { items, loading, meta } = useSelector((state) => state?.taskSlice);
+  const [pendingRemoveTasks, setPendingRemoveTask] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     dispatch(getTasks(paramTask));
   }, [currentPage]);
-  // pagination;
-  const setPage=(numPage)=>{
-    setCurrentPage(numPage)
-  }
-  const reTasks = (id) => {
-    setPendingRemoveTask((pre)=>{
-      const isChecked=pendingRemoveTasks.includes(id);
-      if(isChecked) {
-        return pendingRemoveTasks.filter((item)=>item !== id)
-      }
-      else{
-        return  [...pre,id]
-      }
-   })
-    // dispatch(taskSlice.actions.removeTasks(id));
+  const setPage = (numPage) => {
+    setCurrentPage(numPage);
   };
-
-  useEffect(()=>{
+  const reTasks = (id) => {
+    setPendingRemoveTask((pre) => {
+      const isChecked = pendingRemoveTasks.includes(id);
+      if (isChecked) {
+        return pendingRemoveTasks.filter((item) => item !== id);
+      } else {
+        return [...pre, id];
+      }
+    });
+  };
+  useEffect(() => {
     dispatch(taskSlice.actions.removeTasks(pendingRemoveTasks));
-  },[pendingRemoveTasks])
-  if (Loading) return <p>Loading...</p>;
+  }, [pendingRemoveTasks]);
+  if (loading) return <Loading/>;
   return (
     <MDBTable bordered>
       <MDBTableHead>
@@ -69,11 +64,11 @@ function TableTask() {
           />
         ))}
       </MDBTableBody>
-      <div >
-      {/* <span onClick={() => setCurrenPage(1)}>1</span> */}
+      <div>
+        {/* <span onClick={() => setCurrenPage(1)}>1</span> */}
         {/* <span onClick={() => setCurrenPage(2)}>2</span> */}
         {/* <PaginatedItems itemsPerPage={3}/> */}
-        <PaginatedItems setPage={setPage}/>
+        <PaginatedItems setPage={setPage} />
       </div>
     </MDBTable>
   );

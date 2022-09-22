@@ -1,13 +1,15 @@
 import styles from "./Filter.module.scss";
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, getTasks,removeTask } from "../../stores/slice/taskSlice";
+import { addTask, getTasks, removeTask } from "../../stores/slice/taskSlice";
 import filterSlice from "../../stores/slice/searchSlice";
 const cx = classNames.bind(styles);
 function Filter() {
   const dispatch = useDispatch();
   const paramTask = useSelector((state) => state.filterSlice.paramTask);
-  const listRemoveMultiTask=useSelector((state)=>state.taskSlice.removeTasks)
+  const listRemoveMultiTask = useSelector(
+    (state) => state.taskSlice.removeTasks
+  );
   // console.log(listRemoveMultiTask)
   const handleAddtask = () => {
     dispatch(
@@ -25,16 +27,21 @@ function Filter() {
     await dispatch(getTasks({ ...paramTask, limit: Number(numbers) }));
     // await dispatch(getTasks({ limit:numbers,page: 1 }));
   };
-  const handleRemoveMultiTasks=async()=>{
-    await listRemoveMultiTask.forEach(async(id) => {
+  const handleRemoveMultiTasks = async () => {
+    await listRemoveMultiTask.forEach(async (id) => {
       const response = await dispatch(removeTask(id));
       if (removeTask.fulfilled.match(response)) {
-        
       } else {
         alert("error");
       }
     });
     await dispatch(getTasks(paramTask));
+  };
+  const handleFilterStatus=async(status)=>{
+      if(status=='') await dispatch(getTasks(paramTask));
+      else{
+        await dispatch(getTasks({ ...paramTask, status:status}));
+      }
   }
   return (
     <div className={cx("wraper")}>
@@ -56,6 +63,7 @@ function Filter() {
           // onChange={handleSearchTextTask}
         ></input>
       </div>
+      
       <div className={cx("optinon-filter")}>
         <button onClick={handleAddtask}>Add Task</button>
         <div>
@@ -73,8 +81,20 @@ function Filter() {
             <option value={3}>3</option>
           </select>
         </div>
+
+        <div>
+        <label>FIlter Tasks</label>
+        <select onChange={(e)=>{
+          handleFilterStatus(e.target.value)
+        }}>
+            <option value={''}>all</option>
+            <option value={'COMPLETED'}>Complete</option>
+            <option value={'IN_PROGRESS'}>IN_PROGRESS</option>
+        </select>
+      </div>
         <button onClick={handleRemoveMultiTasks}>Delete</button>
       </div>
+      
     </div>
   );
 }
