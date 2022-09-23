@@ -18,9 +18,9 @@ function TableTask() {
   const [pendingRemoveTasks, setPendingRemoveTask] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    dispatch(getTasks(paramTask));
-  }, [currentPage]);
+  // useEffect(() => {
+  //   dispatch(getTasks(paramTask));
+  // }, [currentPage]);
   const setPage = (numPage) => {
     setCurrentPage(numPage);
   };

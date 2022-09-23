@@ -23,7 +23,6 @@ const cateSlice=createSlice({
                 state.list=action.payload;
             })
             .addCase(getCategories.rejected,(state,action)=>{
-                console.log("rejected");
                 state.error = action.payload;
             })
     }

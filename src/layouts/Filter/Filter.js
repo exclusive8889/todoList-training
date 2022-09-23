@@ -2,7 +2,7 @@ import Select from "react-select";
 import Search from "../../component/Search/Search";
 import filterSlice from "../../stores/slice/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import { addTask, getTasks, removeTask } from "../../stores/slice/taskSlice";
 
 import styles from "./Filter.module.scss";
@@ -35,7 +35,7 @@ function Filter() {
 
   const handleNumberOfTask = async (numbers) => {
     await dispatch(filterSlice.actions.limitTask(Number(numbers)));
-    await dispatch(getTasks({ ...paramTask, limit: Number(numbers) }));
+    // await dispatch(getTasks({ ...paramTask, limit: Number(numbers) }));
   };
 
   const handleRemoveMultiTasks = async () => {
@@ -52,11 +52,19 @@ function Filter() {
   const handleFilterStatus = async (status) => {
     // const response =await dispatch(filterSlice.actions.setStatus(status))
     // if(response>0) await dispatch(getTasks(paramTask));
-    if (status == "") await dispatch(getTasks(paramTask));
-    else {
-      await dispatch(getTasks({ ...paramTask, status: status }));
-    }
+    // console.log(paramTask)
+    // if (status == "") 
+    await dispatch(filterSlice.actions.setStatus(status));
+    // else {
+      // await dispatch(filterSlice.actions.setStatus(status))
+      // await dispatch(getTasks({ ...paramTask, status: status }));
+    // }
   };
+
+
+  useEffect(()=>{
+    dispatch(getTasks(paramTask));
+  },[paramTask])
 
   const listcate = useMemo(() => {
     const list = listCategories?.map((item, index) => ({

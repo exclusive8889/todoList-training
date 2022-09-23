@@ -12,16 +12,15 @@ function Search() {
     const [searchText, setSearchText] = useState("");
     const paramTask = useSelector((state) => state.filterSlice.paramTask);
     const valueSearch = useDebounce(searchText, 800);
-    const handleSearchTextTask =(e)=>{
-        setSearchText(e.target.value)
-    }
+    const handleSearchTextTask =(e)=>{ setSearchText(e.target.value)}
+
     useEffect(()=>{
         if(searchText=='') dispatch(getTasks(paramTask));
         else{       
             dispatch(getTasks({ ...paramTask, title:valueSearch}));
         }
-        
     },[valueSearch])
+
     return (    
         <div className={cx("search")}>
         <input
@@ -32,5 +31,4 @@ function Search() {
       </div>
       );
 }
-
 export default Search;
