@@ -1,15 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home/Home";
-import { getTasks } from "../stores/slice/taskSlice";
 import { getCategories } from "../stores/slice/categoriesSlice";
-import { signin } from "../stores/slice/authSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+
 function AuthorizedRoutes({ isAuthenticated = true }) {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData =async()=>{
-      // await dispatch(getTasks());
       await dispatch(getCategories());
     }
     fetchData()

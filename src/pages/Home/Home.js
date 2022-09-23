@@ -1,13 +1,9 @@
 import Header from "../../layouts/Header/Header";
-import styles from "./Home.module.scss";
 import Filter from "../../layouts/Filter/Filter";
-import classNames from "classnames/bind";
 import TableTask from "../../layouts/TableTask/TableTask";
-import { signin } from "../../stores/slice/authSlice";
-import { getTasks } from "../../stores/slice/taskSlice";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+
+import classNames from "classnames/bind";
+import styles from "./Home.module.scss";
 const cx = classNames.bind(styles);
 
 function Home() {
@@ -18,7 +14,6 @@ function Home() {
         <Filter/>
         <TableTask/>
       </div>
-      
     </>
   );
 }

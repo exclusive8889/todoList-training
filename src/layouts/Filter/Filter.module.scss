@@ -16,7 +16,6 @@
             height: 100%;
             background-color: transparent;
         }
-        
         &-select{
            width: 20%;
            padding-left: 10px;
@@ -29,4 +28,10 @@
 .optinon-filter{
     display: flex;
     justify-content: space-around;
+    & .addTask{
+        height: 100px;
+    }
+    input {
+        background-color: beige;
+    }
 }

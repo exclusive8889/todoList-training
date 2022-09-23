@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -25,15 +25,6 @@ function PaginatedItems() {
       onClick={async () => {
         await dispatch(filterSlice.actions.setCurrentPage(page));
         await dispatch(getTasks({ ...paramTask, page: page }));
-        // })
-
-        // console.log('sc')
-
-        // if (setCurrentPage.fulfilled.match(response)) {
-        //   dispatch(getTasks(paramTask));
-        // } else {
-        //   alert("error");
-        // }
       }}
     >
       <a

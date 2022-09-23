@@ -2,8 +2,8 @@ import Select from "react-select";
 import Search from "../../component/Search/Search";
 import filterSlice from "../../stores/slice/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, getTasks, removeTask } from "../../stores/slice/taskSlice";
 import { useRef, useState, useMemo } from "react";
+import { addTask, getTasks, removeTask } from "../../stores/slice/taskSlice";
 
 import styles from "./Filter.module.scss";
 import classNames from "classnames/bind";
@@ -68,25 +68,27 @@ function Filter() {
 
   return (
     <div className={cx("wraper")}>
-      <Search />
+      {/* <Search /> */}
       <div className={cx("optinon-filter")}>
-        <div>
+        <div className={cx("addTask")}>
           <button onClick={handleAddtask}>Add Task</button>
-          <input
-            onChange={(e) => {
-              valueAddtask.current.title = e.target.value;
-            }}
-          />
-          <Select
-            closeMenuOnSelect={false}
-            defaultValue={[]}
-            isMulti
-            name="colors"
-            options={listcate}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            onChange={setSelectedOption}
-          />
+          <div>
+            <input placeholder="Add Title"
+              onChange={(e) => {
+                valueAddtask.current.title = e.target.value;
+              }}
+            />
+            <Select
+              closeMenuOnSelect={false}
+              defaultValue={[]}
+              isMulti
+              name="colors"
+              options={listcate}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              onChange={setSelectedOption}
+            />
+          </div>
         </div>
         <div>
           <label for="cars">Number of tasks:</label>

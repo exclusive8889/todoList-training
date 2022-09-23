@@ -1,7 +1,6 @@
 import { ApiClient } from "../request/request";
 import { loginFailed, loginSuccess } from "../stores/slice/authSlice";
 import { removeAccessToken, handleStorageToken } from "./auth.util";
-import { signin } from "../stores/slice/authSlice";
 
 export const loginUser = async (user, dispatch, navigate) => {
   ApiClient.post("/auth/login", user)

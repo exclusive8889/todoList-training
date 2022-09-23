@@ -1,34 +1,32 @@
-import React, {
-  useMemo,
-  useState,
-  memo,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useMemo, useState, memo, useEffect, useRef } from "react";
 import Select from "react-select";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
-import taskSlice from "../../stores/slice/taskSlice";
-function Tasks({ data,reTasks,pendingRemoveTasks }) {
+
+function Tasks({ data, reTasks, pendingRemoveTasks }) {
   const dispatch = useDispatch();
-  const paramTask=useSelector((state)=>state.filterSlice.paramTask)
+  const paramTask = useSelector((state) => state.filterSlice.paramTask);
   const listCategories = useSelector((state) => state?.categories?.list);
+
   const [editTask, setEdittask] = useState(false);
   const [cateOfTask, setCateOfTask] = useState();
   const [valueInputTask, setValueInputTask] = useState(data.title);
+
   const inputEditRef = useRef();
   const dataUpdateTask = useRef({
     title: data.title,
     categoryIds: data.categories.map((list) => list.id),
     status: data.status,
   });
+
   const [defaultCate, setDefaultCate] = useState(
     data?.categories.map((item, index) => ({
       value: item.id,
       label: item.name,
     }))
   );
+
   const listcate = useMemo(() => {
     if (data.status == "COMPLETED") return [];
     const list = listCategories?.map((item, index) => ({
@@ -64,6 +62,7 @@ function Tasks({ data,reTasks,pendingRemoveTasks }) {
       alert("error");
     }
   };
+
   const handleCompleted = async () => {
     data.status == "COMPLETED"
       ? (dataUpdateTask.current = {
@@ -76,8 +75,8 @@ function Tasks({ data,reTasks,pendingRemoveTasks }) {
         });
     await handleUpdateTask(dataUpdateTask.current, data.id);
   };
+
   const handleDeleteTask = async (id) => {
-    // const dispatch=useDispatch()
     const response = await dispatch(removeTask(id));
     if (removeTask.fulfilled.match(response)) {
       await dispatch(getTasks(paramTask));
@@ -85,16 +84,7 @@ function Tasks({ data,reTasks,pendingRemoveTasks }) {
       alert("error");
     }
   };
-  // const reTasks = (id) => {
-  //   setPendingRemoveTask((pre)=>[...pre,id])
-  //   // dispatch(taskSlice.actions.removeTasks(id));
-  // };
-  // console.log(pendingRemoveTasks)
-  //  useEffect(() => {
-  //   if (dataUpdateTask.current.status=="COMPLETED") return;
-  //   handleUpdateTask(dataUpdateTask.current, data.id);
-  // }, [dataUpdateTask.current.categoryIds]);
-  // console.log('re-render')
+
   return (
     <>
       <tr>
@@ -103,7 +93,6 @@ function Tasks({ data,reTasks,pendingRemoveTasks }) {
             type="checkbox"
             checked={pendingRemoveTasks.includes(data.id)}
             onChange={() => {
-              // setPendingRemoveTask(!pendingRemoveTasks)
               reTasks(data.id);
             }}
           ></input>
@@ -149,19 +138,20 @@ function Tasks({ data,reTasks,pendingRemoveTasks }) {
           ></input>
         </td>
         <td>
-          <span>
-            <MDBBtn
-              color="success"
-              rounded
-              size="sm"
-              onClick={() => {
-                setEdittask(!editTask);
-                // if (!updateTask) inputEditRef.current.focus();
-              }}
-            >
-              Edit
-            </MDBBtn>
-          </span>
+          {data.status == "IN_PROGRESS" && (
+            <span>
+              <MDBBtn
+                color="success"
+                rounded
+                size="sm"
+                onClick={() => {
+                  setEdittask(!editTask);
+                }}
+              >
+                Edit
+              </MDBBtn>
+            </span>
+          )}
           <MDBBtn
             color="danger"
             rounded
