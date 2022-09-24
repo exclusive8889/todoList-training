@@ -1,11 +1,10 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-import { memo } from "react";
+import React,{memo} from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getTasks } from "../../stores/slice/taskSlice";
 import filterSlice from "../../stores/slice/searchSlice";
+
 import styles from "./Pagination.module.scss";
 import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
@@ -15,16 +14,17 @@ function PaginatedItems() {
   const meta = useSelector((state) => state.taskSlice.meta);
   const paramTask = useSelector((state) => state.filterSlice.paramTask);
   const pages = [];
+
   for (let i = 1; i <= meta.totalPages; i++) {
     pages.push(i);
   }
+
   const listPages = pages.map((page) => (
     <li
       key={page}
       className={cx("page-item")}
       onClick={async () => {
         await dispatch(filterSlice.actions.setCurrentPage(page));
-        await dispatch(getTasks({ ...paramTask, page: page }));
       }}
     >
       <a
@@ -46,7 +46,6 @@ function PaginatedItems() {
                 disabled={meta.currentPage <= 1}
                 onClick={async() => {
                   await dispatch(filterSlice.actions.setCurrentPage(paramTask.page-1));
-                  await dispatch(getTasks({ ...paramTask, page: paramTask.page-1 }));
                 }}
               >
                 <FontAwesomeIcon icon={faArrowLeft} />
@@ -60,7 +59,6 @@ function PaginatedItems() {
                 clbuttonssName={cx("page-link")}
                 onClick={async() => {
                   await dispatch(filterSlice.actions.setCurrentPage(paramTask.page+1));
-                  await dispatch(getTasks({ ...paramTask, page: paramTask.page+1 }));
                 }}
               >
                 <FontAwesomeIcon icon={faArrowRight} />

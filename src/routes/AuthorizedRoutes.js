@@ -1,17 +1,18 @@
-import { Route, Routes } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import { getCategories } from "../stores/slice/categoriesSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 
 function AuthorizedRoutes({ isAuthenticated = true }) {
   const dispatch = useDispatch();
   useEffect(() => {
-    const fetchData =async()=>{
+    const fetchCategories = async () => {
       await dispatch(getCategories());
-    }
-    fetchData()
+    };
+    fetchCategories();
   }, []);
+  
   return (
     <Routes>
       <Route path="/" element={isAuthenticated ? <Home /> : null}></Route>

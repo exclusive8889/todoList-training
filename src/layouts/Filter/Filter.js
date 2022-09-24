@@ -1,5 +1,4 @@
 import Select from "react-select";
-import Search from "../../component/Search/Search";
 import filterSlice from "../../stores/slice/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState, useMemo, useEffect } from "react";
@@ -14,14 +13,20 @@ function Filter() {
   const [selectedOption, setSelectedOption] = useState([]);
   const listCategories = useSelector((state) => state?.categories?.list);
   const paramTask = useSelector((state) => state?.filterSlice?.paramTask);
-  const listRemoveMultiTask = useSelector(
-    (state) => state?.taskSlice?.removeTasks
-  );
+  const listRemoveMultiTask = useSelector((state) => state?.taskSlice?.removeTasks);
 
   const valueAddtask = useRef({
     title: "",
     categoryIds: [],
   });
+
+  const listcate = useMemo(() => {
+    const list = listCategories?.map((item, index) => ({
+      value: item.id,
+      label: item.name,
+    }));
+    return list;
+  }, [listCategories]);
 
   const handleAddtask = async () => {
     valueAddtask.current.categoryIds = selectedOption.map((item) => item.value);
@@ -31,11 +36,6 @@ function Filter() {
     } else {
       alert("error");
     }
-  };
-
-  const handleNumberOfTask = async (numbers) => {
-    await dispatch(filterSlice.actions.limitTask(Number(numbers)));
-    // await dispatch(getTasks({ ...paramTask, limit: Number(numbers) }));
   };
 
   const handleRemoveMultiTasks = async () => {
@@ -49,34 +49,23 @@ function Filter() {
     await dispatch(getTasks(paramTask));
   };
 
-  const handleFilterStatus = async (status) => {
-    // const response =await dispatch(filterSlice.actions.setStatus(status))
-    // if(response>0) await dispatch(getTasks(paramTask));
-    // console.log(paramTask)
-    // if (status == "") 
-    await dispatch(filterSlice.actions.setStatus(status));
-    // else {
-      // await dispatch(filterSlice.actions.setStatus(status))
-      // await dispatch(getTasks({ ...paramTask, status: status }));
-    // }
+  const handleNumberOfTask = async (numbers) => {
+    await dispatch(filterSlice.actions.limitTask(Number(numbers)));
   };
 
+  const handleFilterStatus = async (status) => {
+    await dispatch(filterSlice.actions.setStatus(status));
+  };
 
   useEffect(()=>{
-    dispatch(getTasks(paramTask));
+    const fetchTasks=async()=>{
+      await dispatch(getTasks(paramTask));
+    }
+    fetchTasks()
   },[paramTask])
-
-  const listcate = useMemo(() => {
-    const list = listCategories?.map((item, index) => ({
-      value: item.id,
-      label: item.name,
-    }));
-    return list;
-  }, [listCategories]);
 
   return (
     <div className={cx("wraper")}>
-      {/* <Search /> */}
       <div className={cx("optinon-filter")}>
         <div className={cx("addTask")}>
           <button onClick={handleAddtask}>Add Task</button>
