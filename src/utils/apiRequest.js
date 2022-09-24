@@ -1,17 +1,15 @@
-import { ApiClient } from "../request/request";
-import { loginFailed, loginSuccess } from "../stores/slice/authSlice";
+import { signin } from "../stores/slice/authSlice";
 import { removeAccessToken, handleStorageToken } from "./auth.util";
 
 export const loginUser = async (user, dispatch, navigate) => {
-  ApiClient.post("/auth/login", user)
-    .then((res) => {
-      dispatch(loginSuccess(res.data.data));
-      handleStorageToken(res.data.data.accessToken, res.data.data.id);
-      navigate("/");
-    })
-    .catch((error) => {
-      dispatch(loginFailed(error.response.data.error.message));
-    });
+  dispatch(signin(user))
+  .then((response)=>{
+    handleStorageToken(response.payload.data.accessToken, response.payload.data.id);
+    navigate("/");
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
 };
 
 export const logout = () => {

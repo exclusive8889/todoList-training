@@ -1,8 +1,8 @@
 import { loginUser } from "../../../utils/apiRequest";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import "./SignIn.scss";
 
 function Signin({ changeAuthMode }) {

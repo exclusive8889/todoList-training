@@ -7,23 +7,21 @@ const cateSlice=createSlice({
         list:[],
         meta:[],
         error: null,
+        isLoading:null,
     },
-    reducers:{
-        // getCategories:(state,action)=>{
-        //     state.items=action.payload
-        // },
-        totalCate:(state,action)=>{
-            state.meta=action.payload
-        },
-    },
-    
     extraReducers:(builder)=>{
         builder
             .addCase(getCategories.fulfilled,(state,action)=>{
                 state.list=action.payload;
+                state.error = false;
+                state.isLoading = false;
             })
-            .addCase(getCategories.rejected,(state,action)=>{
-                state.error = action.payload;
+            .addCase(getCategories.rejected,(state)=>{
+                state.error = true;
+                state.isLoading = false;
+            })
+            .addCase(getCategories.pending,(state)=>{
+                state.isLoading = true;
             })
     }
 });

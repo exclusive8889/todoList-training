@@ -17,8 +17,8 @@ import Search from "../../component/Search/Search";
 const cx = classNames.bind(styles);
 
 function Header() {
-  const user = useSelector((state) => state.auth.login?.currenUser);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.login?.currenUser);
   const [visible, setVisible] = useState(false);
   const show = () => setVisible(true);
   const hide = () => setVisible(false);

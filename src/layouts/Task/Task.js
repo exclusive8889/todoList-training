@@ -84,7 +84,6 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
       alert("error");
     }
   };
-
   return (
     <>
       <tr>

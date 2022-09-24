@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -7,18 +7,18 @@ import { loginUser, logout } from "../../utils/apiRequest";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import { removeAccessToken } from "../../utils/auth.util";
 import styles from "./ChangePassword.module.scss";
 import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 function ChangePassword() {
-  const navigate = useNavigate();
+  const navigate=useNavigate();
   const dispatch = useDispatch();
   const [usename, setusername] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-
+  
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -32,14 +32,13 @@ function ChangePassword() {
   };
   const handleChangePassword = async (e) => {
     e.preventDefault();
-    console.log(user)
     await ApiClient.patch(`/api/users/${localStorage.getItem("id")}`, user)
       .then((res) => {
         if (res.status === 200) {
           alert("Success");
           handleClose();
-          // logout()
-          loginUser(newUser, dispatch, navigate);
+          logout()
+          // loginUser(newUser, dispatch, navigate);
         }
       })
       .catch((err) => {});

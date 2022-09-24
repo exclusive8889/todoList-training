@@ -1,9 +1,5 @@
-import React, {useState, useEffect } from "react";
-import {
-  MDBTable,
-  MDBTableHead,
-  MDBTableBody,
-} from "mdb-react-ui-kit";
+import React, { useState, useEffect, useCallback } from "react";
+import { MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import Tasks from "../Task/Task";
 import taskSlice from "../../stores/slice/taskSlice";
@@ -15,7 +11,7 @@ function TableTask() {
   const { items, loading, meta } = useSelector((state) => state?.taskSlice);
   const [pendingRemoveTasks, setPendingRemoveTask] = useState([]);
 
-  const reTasks = (id) => {
+  const reTasks = useCallback((id) => {
     setPendingRemoveTask((pre) => {
       const isChecked = pendingRemoveTasks.includes(id);
       if (isChecked) {
@@ -24,13 +20,13 @@ function TableTask() {
         return [...pre, id];
       }
     });
-  };
+  }, []);
 
   useEffect(() => {
     dispatch(taskSlice.actions.removeTasks(pendingRemoveTasks));
   }, [pendingRemoveTasks]);
 
-  if (loading) return <Loading/>;
+  if (loading) return <Loading />;
   return (
     <MDBTable bordered>
       <MDBTableHead>
@@ -55,7 +51,7 @@ function TableTask() {
         ))}
       </MDBTableBody>
       <div>
-        <PaginatedItems/>
+        <PaginatedItems />
       </div>
     </MDBTable>
   );

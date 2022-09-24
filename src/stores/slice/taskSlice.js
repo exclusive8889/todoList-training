@@ -5,8 +5,9 @@ const taskSlice = createSlice({
   initialState: {
     items: [],
     meta: [],
-    loading: true,
     removeTasks: [],
+    loading: null,
+    error:null
   },
   reducers: {
     removeTasks: (state, action) => {
@@ -19,13 +20,14 @@ const taskSlice = createSlice({
         state.items = action.payload.data;
         state.meta = action.payload.meta;
         state.loading = false;
+        state.error = false;
       })
       .addCase(getTasks.pending, (state) => {
         state.loading = true;
       })
       .addCase(getTasks.rejected, (state) => {
-        state.loading = true;
-
+        state.loading = false;
+        state.error = true;
       });
   },
 });

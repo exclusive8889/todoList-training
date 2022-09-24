@@ -14,9 +14,9 @@ const requestHandler = (config) => {
 };
 
 const responseErrorHandler = async (error) => {
-  if (error?.response?.status === 401) {
+  if (error?.response?.status == 401) {
+    // alert(error?.response?.data.error.message)
     logout();
-    // console.log('401')
   }
   // const data= error?.response?.data;
   // const message = data?.message;
