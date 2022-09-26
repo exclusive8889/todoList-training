@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./SignIn.scss";
+import { Message_LoginAuth } from "../constants";
 
 function Signin({ changeAuthMode }) {
   const navigate = useNavigate();
@@ -14,10 +15,10 @@ function Signin({ changeAuthMode }) {
       password: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Please input your username"),
+      username: Yup.string().required(Message_LoginAuth.REQUIRED_USERNAME),
       password: Yup.string()
-        .required("Please input your password")
-        .min(6, "Please enter at least 6 characters"),
+        .required(Message_LoginAuth.REQUIRED_PASSWORD)
+        .min(6, Message_LoginAuth.MIN_6CHAR),
     }),
     onSubmit: (user) => {
       loginUser(user, dispatch, navigate);

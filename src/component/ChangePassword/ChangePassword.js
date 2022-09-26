@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -7,7 +7,7 @@ import { loginUser, logout } from "../../utils/apiRequest";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { removeAccessToken } from "../../utils/auth.util";
+
 import styles from "./ChangePassword.module.scss";
 import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
@@ -57,7 +57,7 @@ function ChangePassword() {
                 onChange={(e) => setusername(e.target.value)}
               />
               <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
+                We'll never share your username with anyone else.
               </Form.Text>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">

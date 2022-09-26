@@ -34,8 +34,8 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
       label: item.name,
     }));
     return list;
-  }, [dataUpdateTask?.current]);
-
+  }, [dataUpdateTask?.current,listCategories]);
+  
   useEffect(() => {
     if (!cateOfTask) return;
     dataUpdateTask.current = {

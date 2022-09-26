@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Message_LoginAuth } from "../constants";
 function Register({ changeAuthMode }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,11 +17,11 @@ function Register({ changeAuthMode }) {
       confirmpw: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string().required("Reqiued"),
-      password: Yup.string().required("Reqiued").min(6, "min 6 char"),
+      username: Yup.string().required(Message_LoginAuth.REQUIRED_USERNAME),
+      password: Yup.string().required(Message_LoginAuth.REQUIRED_PASSWORD).min(6, Message_LoginAuth.MIN_6CHAR),
       confirmpw: Yup.string()
-        .required("Reqiued")
-        .oneOf([Yup.ref("password"), null], "password must match"),
+        .required(Message_LoginAuth.REQUIRED_CONFIRMPW)
+        .oneOf([Yup.ref("password"), null], Message_LoginAuth.CONFIRM_PASSWORD),
     }),
   });
 
