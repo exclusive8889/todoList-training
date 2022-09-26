@@ -7,26 +7,28 @@ import { useState, useEffect } from "react";
 import { logout } from "../../utils/apiRequest";
 import { loginSuccess } from "../../stores/slice/authSlice";
 import ChangePassword from "../../component/ChangePassword/ChangePassword";
+import Search from "../../component/Search/Search";
 
 import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react/headless";
 
 import styles from "./Header.module.scss";
 import classNames from "classnames/bind";
-import Search from "../../component/Search/Search";
 const cx = classNames.bind(styles);
 
 function Header() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.login?.currenUser);
+  const user = useSelector((state) => state.auth.login?.currentUser);
   const [visible, setVisible] = useState(false);
   const show = () => setVisible(true);
   const hide = () => setVisible(false);
+
   useEffect(() => {
     ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
       dispatch(loginSuccess(res.data.data));
     });
   }, []);
+  
   return (
     <div className={cx("wrapper")}>
       <div className={cx("wrap-search")}>

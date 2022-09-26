@@ -3,6 +3,7 @@ import Select from "react-select";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { useSelector, useDispatch } from "react-redux";
 import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
+import { STATUS } from "./constants";
 
 function Tasks({ data, reTasks, pendingRemoveTasks }) {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
   );
 
   const listcate = useMemo(() => {
-    if (data.status == "COMPLETED") return [];
+    if (data.status === STATUS.COMPLETED) return [];
     const list = listCategories?.map((item, index) => ({
       value: item.id,
       label: item.name,
@@ -64,14 +65,14 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
   };
 
   const handleCompleted = async () => {
-    data.status == "COMPLETED"
+    data.status === STATUS.COMPLETED
       ? (dataUpdateTask.current = {
           ...dataUpdateTask.current,
-          status: "IN_PROGRESS",
+          status: STATUS.IN_PROGRESS,
         })
       : (dataUpdateTask.current = {
           ...dataUpdateTask.current,
-          status: "COMPLETED",
+          status: STATUS.COMPLETED,
         });
     await handleUpdateTask(dataUpdateTask.current, data.id);
   };
@@ -124,7 +125,7 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
             options={listcate}
             className="basic-multi-select"
             classNamePrefix="select"
-            isDisabled={data.status == "COMPLETED"}
+            isDisabled={data.status === "COMPLETED"}
             onChange={setCateOfTask}
           />
         </td>
@@ -133,7 +134,7 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
         <td>
           <input
             type="checkbox"
-            checked={data.status == "COMPLETED"}
+            checked={data.status === "COMPLETED"}
             onChange={handleCompleted}
           ></input>
         </td>

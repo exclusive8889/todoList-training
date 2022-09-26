@@ -1,14 +1,17 @@
 import { loginUser } from "../../../utils/apiRequest";
+import { Message_LoginAuth } from "../constants";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
+import "./SignIn.scss";
+
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "./SignIn.scss";
-import { Message_LoginAuth } from "../constants";
 
 function Signin({ changeAuthMode }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const err = useSelector((state) => state.auth.errorLogin);
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -24,7 +27,7 @@ function Signin({ changeAuthMode }) {
       loginUser(user, dispatch, navigate);
     },
   });
-  const err = useSelector((state) => state.auth.errorLogin);
+  
 
   return (
     <div className="Auth-form-container">
@@ -40,7 +43,7 @@ function Signin({ changeAuthMode }) {
           <div className="form-group mt-3">
             <label>User name</label>
             <input
-              id="username"
+              name="username"
               className="form-control mt-1"
               placeholder="User name"
               value={formik.values.username}
@@ -53,7 +56,7 @@ function Signin({ changeAuthMode }) {
           <div className="form-group mt-3">
             <label>Password</label>
             <input
-              id="password"
+              name="password"
               type="password"
               className="form-control mt-1"
               placeholder="Enter password"

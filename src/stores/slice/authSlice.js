@@ -2,32 +2,34 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiClient } from "../../request/request";
 import { logout } from "../../utils/apiRequest";
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     login: {
-      currenUser: null,
+      currentUser: null,
     },
     errorLogin: "",
     errorRegister: "",
+    errorChangePassword:"",
   },
   reducers: {
-    loginStart: (state) => {
-      state.login.isFetching = true;
-    },
     loginSuccess: (state, action) => {
       state.login.isFetching = false;
-      state.login.currenUser = action.payload;
+      state.login.currentUser = action.payload;
       state.login.error = false;
     },
     registerFailed: (state, action) => {
       state.errorRegister = action.payload;
     },
+    changePasswordFailed:(state,action)=>{
+      state.errorChangePassword = action.payload;
+    }
   },
   extraReducers: (buider) => {
     buider
       .addCase(signin.fulfilled, (state, action) => {
-        state.login.currenUser = action.payload;
+        state.login.currentUser = action.payload;
       })
       .addCase(signin.rejected, (state, action) => {
         state.errorLogin = action.payload.message;
@@ -37,6 +39,7 @@ const authSlice = createSlice({
       });
   },
 });
+
 export const signin = createAsyncThunk(
   "user/signin",
   async (user, { rejectWithValue }) => {
@@ -61,7 +64,7 @@ export const register = (newUser, navigate, dispatch, changeAuthMode) => {
     });
 };
 
-export const changePassword = async (user, id, handleClose) => {
+export const changePassword = async (user, id, handleClose,dispatch) => {
   await ApiClient.patch(`/api/users/${id}`, user)
     .then((res) => {
       if (res.status === 200) {
@@ -70,9 +73,10 @@ export const changePassword = async (user, id, handleClose) => {
         logout();
       }
     })
-    .catch((err) => {});
+    .catch((error) => {
+      dispatch(changePasswordFailed(error.response.data.error.message));
+    });
 };
 
-export const { loginStart, loginFailed, loginSuccess, registerFailed } =
-  authSlice.actions;
+export const { loginStart, loginFailed, loginSuccess, registerFailed,changePasswordFailed } = authSlice.actions;
 export default authSlice;

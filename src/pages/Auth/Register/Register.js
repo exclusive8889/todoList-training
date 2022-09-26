@@ -1,10 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
 import { register } from "../../../stores/slice/authSlice";
+import { Message_LoginAuth } from "../constants";
+
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Message_LoginAuth } from "../constants";
 
 function Register({ changeAuthMode }) {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ function Register({ changeAuthMode }) {
           <div className="form-group mt-3">
             <label>Usename</label>
             <input
-              id="username"
+              name="username"
               type="text"
               className="form-control mt-1"
               value={formik.values.username}
@@ -64,7 +65,7 @@ function Register({ changeAuthMode }) {
           <div className="form-group mt-3">
             <label>Password</label>
             <input
-              id="password"
+              name="password"
               type="password"
               className="form-control mt-1"
               value={formik.values.password}
@@ -77,7 +78,7 @@ function Register({ changeAuthMode }) {
           <div className="form-group mt-3">
             <label>Confirm Password</label>
             <input
-              id="confirmpw"
+              name="confirmpw"
               type="password"
               className="form-control mt-1"
               placeholder="Password"

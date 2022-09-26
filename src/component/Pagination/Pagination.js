@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-import React,{memo} from "react";
+import React, { memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import filterSlice from "../../stores/slice/searchSlice";
 
@@ -23,8 +23,8 @@ function PaginatedItems() {
     <li
       key={page}
       className={cx("page-item")}
-      onClick={async () => {
-        await dispatch(filterSlice.actions.setCurrentPage(page));
+      onClick={() => {
+        onPageChange(page, false);
       }}
     >
       <a
@@ -35,6 +35,14 @@ function PaginatedItems() {
     </li>
   ));
 
+  const onPageChange = async (page, stateNextPre) => {
+    if (stateNextPre) {
+      await dispatch(filterSlice.actions.setCurrentPage(paramTask.page + page));
+    } else {
+      await dispatch(filterSlice.actions.setCurrentPage(page));
+    }
+  };
+
   return (
     <>
       <div className={cx("pagi")}>
@@ -44,8 +52,8 @@ function PaginatedItems() {
               <button
                 className={cx("page-link")}
                 disabled={meta.currentPage <= 1}
-                onClick={async() => {
-                  await dispatch(filterSlice.actions.setCurrentPage(paramTask.page-1));
+                onClick={() => {
+                  onPageChange(-1, true);
                 }}
               >
                 <FontAwesomeIcon icon={faArrowLeft} />
@@ -57,8 +65,8 @@ function PaginatedItems() {
             <li className={cx("page-next")}>
               <button
                 clbuttonssName={cx("page-link")}
-                onClick={async() => {
-                  await dispatch(filterSlice.actions.setCurrentPage(paramTask.page+1));
+                onClick={() => {
+                  onPageChange(1, true);
                 }}
               >
                 <FontAwesomeIcon icon={faArrowRight} />

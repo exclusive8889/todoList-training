@@ -9,6 +9,7 @@ export default function Login() {
   const changeAuthMode = () => {
     setAuthMode(authMode === true ? false : true);
   };
+
   if (authMode) {
     return <Signin changeAuthMode={changeAuthMode} />;
   }
