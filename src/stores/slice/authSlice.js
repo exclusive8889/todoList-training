@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiClient } from "../../request/request";
+import { logout } from "../../utils/apiRequest";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -47,6 +48,7 @@ export const signin = createAsyncThunk(
     }
   }
 );
+
 export const register=(newUser,navigate,dispatch,changeAuthMode)=>{
   ApiClient.post("/auth/register", newUser)
     .then((res) => {
@@ -57,6 +59,20 @@ export const register=(newUser,navigate,dispatch,changeAuthMode)=>{
     .catch((error) => {
       dispatch(registerFailed(error.response.data.error.message));
     });
+}
+
+export const changePassword=async(user,id,handleClose)=>{
+  console.log(id)
+  await ApiClient.patch(`/api/users/${id}`, user)
+  .then((res) => {
+    if (res.status === 200) {
+      alert("Success");
+      handleClose();
+      logout()
+      // loginUser(newUser, dispatch, navigate);
+    }
+  })
+  .catch((err) => {});
 }
 
 export const { loginStart, loginFailed, loginSuccess,registerFailed } = authSlice.actions;
