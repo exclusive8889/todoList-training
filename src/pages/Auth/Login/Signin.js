@@ -41,7 +41,6 @@ function Signin({ changeAuthMode }) {
             <label>User name</label>
             <input
               id="username"
-              type="text"
               className="form-control mt-1"
               placeholder="User name"
               value={formik.values.username}

@@ -47,5 +47,17 @@ export const signin = createAsyncThunk(
     }
   }
 );
+export const register=(newUser,navigate,dispatch,changeAuthMode)=>{
+  ApiClient.post("/auth/register", newUser)
+    .then((res) => {
+      res.status === 201 ? alert("Success") : alert("failed");
+      navigate("/sign-in");
+      changeAuthMode()
+    })
+    .catch((error) => {
+      dispatch(registerFailed(error.response.data.error.message));
+    });
+}
+
 export const { loginStart, loginFailed, loginSuccess,registerFailed } = authSlice.actions;
 export default authSlice;

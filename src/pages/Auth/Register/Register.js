@@ -1,7 +1,6 @@
-
 import { ApiClient } from "../../../request/request";
-import { useDispatch,useSelector } from "react-redux";
-import { registerFailed } from "../../../stores/slice/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { register, registerFailed } from "../../../stores/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
@@ -18,29 +17,24 @@ function Register({ changeAuthMode }) {
     },
     validationSchema: Yup.object({
       username: Yup.string().required(Message_LoginAuth.REQUIRED_USERNAME),
-      password: Yup.string().required(Message_LoginAuth.REQUIRED_PASSWORD).min(6, Message_LoginAuth.MIN_6CHAR),
+      password: Yup.string()
+        .required(Message_LoginAuth.REQUIRED_PASSWORD)
+        .min(6, Message_LoginAuth.MIN_6CHAR),
       confirmpw: Yup.string()
         .required(Message_LoginAuth.REQUIRED_CONFIRMPW)
         .oneOf([Yup.ref("password"), null], Message_LoginAuth.CONFIRM_PASSWORD),
     }),
   });
-
+  
   const handleRegister = (e) => {
+    const newUser ={
+        username: formik.values.username,
+        password: formik.values.password,
+    }
     e.preventDefault();
-    ApiClient.post("/auth/register", {
-      username: formik.values.username,
-      password: formik.values.password,
-    })
-      .then((res) => {
-        res.status === 201 ? alert("Success") : alert("failed");
-        navigate("/sign-in");
-        changeAuthMode()
-      })
-      .catch((error) => {
-        dispatch(registerFailed(error.response.data.error.message));
-      });
+    register(newUser,navigate,dispatch,changeAuthMode);
   };
-  const errorRegister =useSelector((state)=> state.auth.errorRegister)
+  const errorRegister = useSelector((state) => state.auth.errorRegister);
   return (
     <div className="Auth-form-container">
       <form className="Auth-form">
@@ -58,7 +52,6 @@ function Register({ changeAuthMode }) {
               id="username"
               type="text"
               className="form-control mt-1"
-              placeholder="e.g Jane Doe"
               value={formik.values.username}
               onChange={formik.handleChange}
             />
@@ -72,7 +65,6 @@ function Register({ changeAuthMode }) {
               id="password"
               type="password"
               className="form-control mt-1"
-              placeholder="Email Address"
               value={formik.values.password}
               onChange={formik.handleChange}
             />
