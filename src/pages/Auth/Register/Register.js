@@ -1,14 +1,16 @@
-import { ApiClient } from "../../../request/request";
 import { useDispatch, useSelector } from "react-redux";
-import { register, registerFailed } from "../../../stores/slice/authSlice";
+import { register } from "../../../stores/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Message_LoginAuth } from "../constants";
+
 function Register({ changeAuthMode }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const errorRegister = useSelector((state) => state.auth.errorRegister);
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -25,23 +27,23 @@ function Register({ changeAuthMode }) {
         .oneOf([Yup.ref("password"), null], Message_LoginAuth.CONFIRM_PASSWORD),
     }),
   });
-  
+
   const handleRegister = (e) => {
-    const newUser ={
-        username: formik.values.username,
-        password: formik.values.password,
-    }
+    const newUser = {
+      username: formik.values.username,
+      password: formik.values.password,
+    };
     e.preventDefault();
-    register(newUser,navigate,dispatch,changeAuthMode);
+    register(newUser, navigate, dispatch, changeAuthMode);
   };
-  const errorRegister = useSelector((state) => state.auth.errorRegister);
+
   return (
     <div className="Auth-form-container">
       <form className="Auth-form">
         <div className="Auth-form-content">
           <h3 className="Auth-form-title">Register</h3>
           <div className="text-center">
-            Already registered?{" "}
+            Already registered?&nbsp;
             <span className="link-primary" onClick={changeAuthMode}>
               Sign In
             </span>

@@ -8,8 +8,8 @@ const authSlice = createSlice({
     login: {
       currenUser: null,
     },
-    errorLogin: '',
-    errorRegister:''
+    errorLogin: "",
+    errorRegister: "",
   },
   reducers: {
     loginStart: (state) => {
@@ -20,22 +20,22 @@ const authSlice = createSlice({
       state.login.currenUser = action.payload;
       state.login.error = false;
     },
-    registerFailed:(state,action) => {
-      state.errorRegister=action.payload;
+    registerFailed: (state, action) => {
+      state.errorRegister = action.payload;
     },
   },
-  extraReducers:(buider)=>{
+  extraReducers: (buider) => {
     buider
-      .addCase(signin.fulfilled,(state,action)=>{
-        state.login.currenUser=action.payload;
+      .addCase(signin.fulfilled, (state, action) => {
+        state.login.currenUser = action.payload;
       })
-      .addCase(signin.rejected,(state,action)=>{
-        state.errorLogin=action.payload.message;
+      .addCase(signin.rejected, (state, action) => {
+        state.errorLogin = action.payload.message;
       })
-      .addCase(signin.pending,(state)=>{
+      .addCase(signin.pending, (state) => {
         state.login.isFetching = true;
-      })
-  }
+      });
+  },
 });
 export const signin = createAsyncThunk(
   "user/signin",
@@ -49,31 +49,30 @@ export const signin = createAsyncThunk(
   }
 );
 
-export const register=(newUser,navigate,dispatch,changeAuthMode)=>{
+export const register = (newUser, navigate, dispatch, changeAuthMode) => {
   ApiClient.post("/auth/register", newUser)
     .then((res) => {
       res.status === 201 ? alert("Success") : alert("failed");
       navigate("/sign-in");
-      changeAuthMode()
+      changeAuthMode();
     })
     .catch((error) => {
       dispatch(registerFailed(error.response.data.error.message));
     });
-}
+};
 
-export const changePassword=async(user,id,handleClose)=>{
-  console.log(id)
+export const changePassword = async (user, id, handleClose) => {
   await ApiClient.patch(`/api/users/${id}`, user)
-  .then((res) => {
-    if (res.status === 200) {
-      alert("Success");
-      handleClose();
-      logout()
-      // loginUser(newUser, dispatch, navigate);
-    }
-  })
-  .catch((err) => {});
-}
+    .then((res) => {
+      if (res.status === 200) {
+        alert("Success");
+        handleClose();
+        logout();
+      }
+    })
+    .catch((err) => {});
+};
 
-export const { loginStart, loginFailed, loginSuccess,registerFailed } = authSlice.actions;
+export const { loginStart, loginFailed, loginSuccess, registerFailed } =
+  authSlice.actions;
 export default authSlice;

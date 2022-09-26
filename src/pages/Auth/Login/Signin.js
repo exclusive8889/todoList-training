@@ -32,7 +32,7 @@ function Signin({ changeAuthMode }) {
         <div className="Auth-form-content">
           <h3 className="Auth-form-title">Sign In</h3>
           <div className="text-center">
-            Not registered yet?{" "}
+            Not registered yet?&nbsp;
             <span className="link-primary" onClick={changeAuthMode}>
               Sign Up
             </span>
