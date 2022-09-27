@@ -16,17 +16,18 @@ const cx = classNames.bind(styles);
 function ChangePassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
+  const [username, setusername] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const [disable, setDisable] = useState(true);
   
   const errorChangePassword = useSelector((state) => state.auth.errorChangePassword);
-  const idUser = useSelector((state) => state.auth.login?.currenUser?.id);
+  const idUser = useSelector((state) => state?.auth?.login?.currentUser?.id);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  
   const handleChangePassword = async (e) => {
     e.preventDefault();
     changePassword(
@@ -56,7 +57,7 @@ function ChangePassword() {
               <Form.Control
                 type="text"
                 placeholder="Username"
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setusername(e.target.value)}
               />
               <Form.Text className="text-muted">
                 We'll never share your username with anyone else.

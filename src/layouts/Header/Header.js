@@ -28,8 +28,8 @@ function Header() {
     visible ? hide():show()
   }
 
-  useEffect(async() => {
-    await ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
+  useEffect(() => {
+    ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
       dispatch(loginSuccess(res.data.data));
     });
   }, []);
@@ -46,7 +46,7 @@ function Header() {
           onClickOutside={hide}
           render={(attrs) => (
             <div className="box" tabIndex="-1" {...attrs}>
-              <div className={cx("option-user")} onClick={onVisible}>
+              <div className={cx("option-user")} onClick={hide}>
                 <ChangePassword />
                 <button onClick={logout}>Log out</button>
               </div>

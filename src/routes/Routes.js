@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthorizedRoutes from "./AuthorizedRoutes";
 function Routes() {
   const navigate = useNavigate();
+
   const accToken = () => {
     return localStorage.getItem("accessToken");
   };
@@ -13,6 +14,7 @@ function Routes() {
       navigate("/sign-in");
     }
   }, [accessToken]);
+  
   return (
     <>
       {!accessToken ? (
