@@ -30,11 +30,11 @@ function Register({ changeAuthMode }) {
   });
 
   const handleRegister = (e) => {
+    e.preventDefault();
     const newUser = {
       username: formik.values.username,
       password: formik.values.password,
     };
-    e.preventDefault();
     register(newUser, navigate, dispatch, changeAuthMode);
   };
 

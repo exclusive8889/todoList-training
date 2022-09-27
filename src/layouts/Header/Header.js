@@ -19,12 +19,17 @@ const cx = classNames.bind(styles);
 function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login?.currentUser);
+  
   const [visible, setVisible] = useState(false);
   const show = () => setVisible(true);
   const hide = () => setVisible(false);
 
-  useEffect(() => {
-    ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
+  const onVisible=()=>{
+    visible ? hide():show()
+  }
+
+  useEffect(async() => {
+    await ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
       dispatch(loginSuccess(res.data.data));
     });
   }, []);
@@ -41,14 +46,14 @@ function Header() {
           onClickOutside={hide}
           render={(attrs) => (
             <div className="box" tabIndex="-1" {...attrs}>
-              <div className={cx("option-user")} onClick={visible && hide}>
+              <div className={cx("option-user")} onClick={onVisible}>
                 <ChangePassword />
                 <button onClick={logout}>Log out</button>
               </div>
             </div>
           )}
         >
-          <div className={cx("user")} onClick={visible ? hide : show}>
+          <div className={cx("user")} onClick={onVisible}>
             <FontAwesomeIcon icon={faUser} />
             <p>{user?.username}</p>
           </div>

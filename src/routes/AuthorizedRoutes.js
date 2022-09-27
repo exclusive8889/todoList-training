@@ -2,8 +2,6 @@ import Home from "../pages/Home/Home";
 import { Route, Routes } from "react-router-dom";
 
 function AuthorizedRoutes({ isAuthenticated = true }) {
-
-  
   return (
     <Routes>
       <Route path="/" element={isAuthenticated ? <Home /> : null}></Route>
