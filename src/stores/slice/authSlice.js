@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ApiClient } from "../../request/request";
-import { logout } from "../../utils/apiRequest";
+
+import {
+  loginApi,
+  updatePasswordApi,
+  registerUser,
+} from "../../utils/fetchApi";
 
 const authSlice = createSlice({
   name: "auth",
@@ -11,7 +15,7 @@ const authSlice = createSlice({
     },
     errorLogin: "",
     errorRegister: "",
-    errorChangePassword:"",
+    errorChangePassword: "",
   },
   reducers: {
     loginSuccess: (state, action) => {
@@ -19,12 +23,9 @@ const authSlice = createSlice({
       state.login.currentUser = action.payload;
       state.login.error = false;
     },
-    registerFailed: (state, action) => {
-      state.errorRegister = action.payload;
-    },
-    changePasswordFailed:(state,action)=>{
+    changePasswordFailed: (state, action) => {
       state.errorChangePassword = action.payload;
-    }
+    },
   },
   extraReducers: (buider) => {
     buider
@@ -32,10 +33,18 @@ const authSlice = createSlice({
         state.login.currentUser = action.payload;
       })
       .addCase(signin.rejected, (state, action) => {
-        state.errorLogin = action.payload.message;
+        state.errorLogin = action.payload;
       })
       .addCase(signin.pending, (state) => {
         state.login.isFetching = true;
+      })
+
+      .addCase(changePassword.rejected, (state, action) => {
+        state.errorChangePassword = action.payload;
+      })
+      
+      .addCase(register.rejected, (state, action) => {
+        state.errorRegister = action.payload;
       });
   },
 });
@@ -44,39 +53,53 @@ export const signin = createAsyncThunk(
   "user/signin",
   async (user, { rejectWithValue }) => {
     try {
-      const res = await ApiClient.post("/auth/login", user);
-      return res.data;
+      const response = await loginApi(user);
+      if (response.accessToken) {
+        return response;
+      }
+      return rejectWithValue(response.response.data.error.message);
     } catch (error) {
-      return rejectWithValue(error.response.data.error);
+      return rejectWithValue(error.response.data.error.message);
     }
   }
 );
 
-export const register = (newUser, navigate, dispatch, changeAuthMode) => {
-  ApiClient.post("/auth/register", newUser)
-    .then((res) => {
-      res.status === 201 ? alert("Success") : alert("failed");
-      navigate("/sign-in");
-      changeAuthMode();
-    })
-    .catch((error) => {
-      dispatch(registerFailed(error.response.data.error.message));
-    });
-};
-
-export const changePassword = async (user, id, handleClose,dispatch) => {
-  await ApiClient.patch(`/api/users/${id}`, user)
-    .then((res) => {
-      if (res.status === 200) {
-        alert("Success");
-        handleClose();
-        logout();
+export const changePassword = createAsyncThunk(
+  "user/updateUser",
+  async (user, { rejectWithValue }) => {
+    try {
+      const response = await updatePasswordApi(user);
+      if (!response.status) {
+        return response;
       }
-    })
-    .catch((error) => {
-      dispatch(changePasswordFailed(error.response.data.error.message));
-    });
-};
+      return rejectWithValue(response.data.error.message);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
-export const { loginStart, loginFailed, loginSuccess, registerFailed,changePasswordFailed } = authSlice.actions;
+export const register = createAsyncThunk(
+  "user/register",
+  async (user, { rejectWithValue }) => {
+    try {
+      const response = await registerUser(user);
+      
+      if (!response.status) {
+        return response;
+      }
+      return rejectWithValue(response.data.error.message);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const {
+  loginStart,
+  loginFailed,
+  loginSuccess,
+  registerFailed,
+  changePasswordFailed,
+} = authSlice.actions;
 export default authSlice;

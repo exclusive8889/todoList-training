@@ -29,13 +29,18 @@ function Register({ changeAuthMode }) {
     }),
   });
 
-  const handleRegister = (e) => {
+  const handleRegister = async(e) => {
     e.preventDefault();
     const newUser = {
       username: formik.values.username,
       password: formik.values.password,
     };
-    register(newUser, navigate, dispatch, changeAuthMode);
+    const response=await dispatch(register(newUser))
+    if (register.fulfilled.match(response)) {
+      alert('Success')
+      navigate("/sign-in");
+      changeAuthMode()
+    }
   };
 
   return (
