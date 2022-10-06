@@ -11,8 +11,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     login: {
-      currentUser: null,
+      currentUser: '',
     },
+    accessToken:null,
     errorLogin: "",
     errorRegister: "",
     errorChangePassword: "",
@@ -23,6 +24,9 @@ const authSlice = createSlice({
       state.login.currentUser = action.payload;
       state.login.error = false;
     },
+    signOut:(state)=>{
+      state.login.currentUser = "";
+    },
     changePasswordFailed: (state, action) => {
       state.errorChangePassword = action.payload;
     },
@@ -31,6 +35,7 @@ const authSlice = createSlice({
     buider
       .addCase(signin.fulfilled, (state, action) => {
         state.login.currentUser = action.payload;
+        state.accessToken = action.payload.accessToken;
       })
       .addCase(signin.rejected, (state, action) => {
         state.errorLogin = action.payload;
@@ -42,7 +47,7 @@ const authSlice = createSlice({
       .addCase(changePassword.rejected, (state, action) => {
         state.errorChangePassword = action.payload;
       })
-      
+
       .addCase(register.rejected, (state, action) => {
         state.errorRegister = action.payload;
       });
@@ -84,7 +89,7 @@ export const register = createAsyncThunk(
   async (user, { rejectWithValue }) => {
     try {
       const response = await registerUser(user);
-      
+
       if (!response.status) {
         return response;
       }
@@ -96,6 +101,7 @@ export const register = createAsyncThunk(
 );
 
 export const {
+  signOut,
   loginStart,
   loginFailed,
   loginSuccess,

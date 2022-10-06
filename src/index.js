@@ -1,24 +1,30 @@
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import GlobalStyle from './component/GlobalStyle';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css'
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import GlobalStyle from "./component/GlobalStyle";
+import "mdb-react-ui-kit/dist/css/mdb.min.css";
 
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter} from 'react-router-dom';
-import { store } from './stores'
-import { Provider } from 'react-redux';
-import React from 'react';
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter } from "react-router-dom";
+
+import { persist, store } from "./stores";
+import { Provider } from "react-redux";
+import React from "react";
+
+import { PersistGate } from "redux-persist/integration/react";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-    <Provider store={store}>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persist}>
       <BrowserRouter>
         <GlobalStyle>
           <App />
         </GlobalStyle>
       </BrowserRouter>
-    </Provider>
+    </PersistGate>
+  </Provider>
   // </React.StrictMode>
 );
 

@@ -1,5 +1,6 @@
-import { signin } from "../stores/slice/authSlice";
+import { signin, signOut } from "../stores/slice/authSlice";
 import { removeAccessToken, handleStorageToken } from "./auth.util";
+import { useDispatch } from "react-redux";
 
 export const loginUser = async (user, dispatch, navigate) => {
   const response = await dispatch(signin(user));
@@ -9,7 +10,9 @@ export const loginUser = async (user, dispatch, navigate) => {
   }
 };
 
-export const logout = () => {
+export const logout = async () => {
+  // const dispatch = useDispatch();
+  // await dispatch(signOut());
   removeAccessToken();
   window.location.href = "/sign-in";
 };

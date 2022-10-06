@@ -23,8 +23,8 @@ function Signin({ changeAuthMode }) {
         .required(Message_LoginAuth.REQUIRED_PASSWORD)
         .min(6, Message_LoginAuth.MIN_6CHAR),
     }),
-    onSubmit: (user) => {
-      loginUser(user, dispatch, navigate);
+    onSubmit: async(user) => {
+      await loginUser(user, dispatch, navigate);
     },
   });
   
