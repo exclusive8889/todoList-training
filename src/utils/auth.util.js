@@ -3,7 +3,7 @@ export const handleStorageToken = (token,id) => {
     localStorage.setItem('id',id);
   };
 export const removeAccessToken = () => {
-    localStorage.removeItem('accessToken')
+    localStorage.removeItem('persist:accessToken')
     localStorage.removeItem('id')
   };
   
