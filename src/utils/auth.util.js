@@ -1,9 +1,8 @@
-export const handleStorageToken = (token,id) => {
+export const handleStorageToken = (token) => {
     localStorage.setItem('accessToken', token);
-    localStorage.setItem('id',id);
   };
 export const removeAccessToken = () => {
-    localStorage.removeItem('persist:accessToken')
-    localStorage.removeItem('id')
+    localStorage.removeItem('persist:user')
+    localStorage.removeItem('accessToken')
   };
   

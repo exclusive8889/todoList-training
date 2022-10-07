@@ -1,13 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
-import { ApiClient } from "../../request/request";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { logout } from "../../utils/apiRequest";
 import { loginSuccess } from "../../stores/slice/authSlice";
 import ChangePassword from "../../component/ChangePassword/ChangePassword";
 import Search from "../../component/Search/Search";
+
+import { getUserByIdApi } from "../../utils/fetchApi";
 
 import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react/headless";
@@ -28,10 +29,11 @@ function Header() {
     visible ? hide():show()
   }
 
-  useEffect(() => {
-    ApiClient.get(`/api/users/${localStorage.getItem("id")}`).then((res) => {
-      dispatch(loginSuccess(res.data.data));
-    });
+  useEffect(async() => {
+    const response=await getUserByIdApi(user.id)
+    if(response){
+      dispatch(loginSuccess(response))
+    }  
   }, []);
   
   return (

@@ -1,8 +1,5 @@
 import axios from "axios";
 import { logout } from "../utils/apiRequest";
-import { useSelector } from "react-redux";
-import { useCallback } from "react";
-import { useEffect } from "react";
 
 
 const axiosInstance = axios.create({
@@ -10,18 +7,7 @@ const axiosInstance = axios.create({
 });
 
 const requestHandler = async(config) => {
-  // const atk = localStorage.getItem("accessToken");
-  const tk1 = JSON.parse(localStorage.getItem("persist:accessToken"));
-  const atk = JSON.parse(tk1.auth).accessToken;
-
-  useEffect(()=>{
-    tk1 = JSON.parse(localStorage.getItem("persist:accessToken"));
-    atk = JSON.parse(tk1.auth).accessToken;
-  },[tk1])
-  
-  console.log(tk1)
-
-
+  const atk = localStorage.getItem("accessToken");
   config.headers = {
     Authorization: `Bearer ${atk}`,
   };
@@ -31,7 +17,7 @@ const requestHandler = async(config) => {
 const responseErrorHandler = async (error) => {
   if (error?.response?.status === 401) {
     // alert(error?.response?.data.error.message)
-    // logout();
+    logout();
   }
   // const data= error?.response?.data;
   // const message = data?.message;
@@ -41,10 +27,12 @@ const responseErrorHandler = async (error) => {
   // }
   return Promise.reject(error);
 };
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   responseErrorHandler
 );
+
 axiosInstance.interceptors.request.use(requestHandler, (err) =>
   Promise.reject(err)
 );

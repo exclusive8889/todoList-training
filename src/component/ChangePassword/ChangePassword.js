@@ -37,13 +37,10 @@ function ChangePassword() {
     );
     if (changePassword.fulfilled.match(response)) {
       handleClose();
+      alert('Success')
       loginUser({ username, password }, dispatch, navigate);
     }
   };
-
-  // useEffect(() => {
-  //   dispatch(changePasswordFailed(""));
-  // }, [show, username]);
 
   const catchErrorUpdateUser = useCallback(() => {
     dispatch(changePasswordFailed(""));

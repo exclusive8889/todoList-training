@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { STATUSCODES } from "../constans";
 
 import {
   loginApi,
@@ -11,9 +12,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     login: {
-      currentUser: '',
+      currentUser: "",
     },
-    accessToken:null,
+    accessToken: null,
     errorLogin: "",
     errorRegister: "",
     errorChangePassword: "",
@@ -24,7 +25,7 @@ const authSlice = createSlice({
       state.login.currentUser = action.payload;
       state.login.error = false;
     },
-    signOut:(state)=>{
+    signOut: (state) => {
       state.login.currentUser = "";
     },
     changePasswordFailed: (state, action) => {
@@ -74,12 +75,12 @@ export const changePassword = createAsyncThunk(
   async (user, { rejectWithValue }) => {
     try {
       const response = await updatePasswordApi(user);
-      if (!response.status) {
-        return response;
+      if (response.status === STATUSCODES.SUCCESS_GET_UPDATE) {
+        return response.data;
       }
       return rejectWithValue(response.data.error.message);
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.data.error.message);
     }
   }
 );
@@ -89,13 +90,12 @@ export const register = createAsyncThunk(
   async (user, { rejectWithValue }) => {
     try {
       const response = await registerUser(user);
-
-      if (!response.status) {
-        return response;
+      if (response.status === STATUSCODES.SUCCESS_ADD) {
+        return response.data;
       }
       return rejectWithValue(response.data.error.message);
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.data.error.message);
     }
   }
 );

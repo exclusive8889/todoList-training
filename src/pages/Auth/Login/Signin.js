@@ -28,7 +28,6 @@ function Signin({ changeAuthMode }) {
     },
   });
   
-
   return (
     <div className="Auth-form-container">
       <form className="Auth-form" onSubmit={formik.handleSubmit}>
