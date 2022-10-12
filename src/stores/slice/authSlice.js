@@ -20,14 +20,6 @@ const authSlice = createSlice({
     errorChangePassword: "",
   },
   reducers: {
-    loginSuccess: (state, action) => {
-      state.login.isFetching = false;
-      state.login.currentUser = action.payload;
-      state.login.error = false;
-    },
-    signOut: (state) => {
-      state.login.currentUser = "";
-    },
     changePasswordFailed: (state, action) => {
       state.errorChangePassword = action.payload;
     },
@@ -37,6 +29,7 @@ const authSlice = createSlice({
       .addCase(signin.fulfilled, (state, action) => {
         state.login.currentUser = action.payload;
         state.accessToken = action.payload.accessToken;
+        state.login.isFetching = false;
       })
       .addCase(signin.rejected, (state, action) => {
         state.errorLogin = action.payload;

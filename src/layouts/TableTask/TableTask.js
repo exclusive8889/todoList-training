@@ -8,7 +8,7 @@ import PaginatedItems from "../../component/Pagination/Pagination";
 
 function TableTask() {
   const dispatch = useDispatch();
-  const { items, loading, meta } = useSelector((state) => state?.taskSlice);
+  const { items, loading } = useSelector((state) => state?.taskSlice);
   const [pendingRemoveTasks, setPendingRemoveTask] = useState([]);
 
   const reTasks =((id) => {
@@ -24,7 +24,7 @@ function TableTask() {
 
   useEffect(() => {
     dispatch(taskSlice.actions.removeTasks(pendingRemoveTasks));
-  }, [pendingRemoveTasks]);
+  }, [pendingRemoveTasks,dispatch]);
 
   if (loading) return <Loading />;
   return (

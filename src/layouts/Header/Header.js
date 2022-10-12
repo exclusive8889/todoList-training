@@ -1,14 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
-import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 import { logout } from "../../utils/apiRequest";
-import { loginSuccess } from "../../stores/slice/authSlice";
 import ChangePassword from "../../component/ChangePassword/ChangePassword";
 import Search from "../../component/Search/Search";
-
-import { getUserByIdApi } from "../../utils/fetchApi";
 
 import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react/headless";
@@ -18,29 +15,20 @@ import classNames from "classnames/bind";
 const cx = classNames.bind(styles);
 
 function Header() {
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.login?.currentUser);
-  
   const [visible, setVisible] = useState(false);
-  const show = () => setVisible(true);
+  
   const hide = () => setVisible(false);
 
-  const onVisible=()=>{
-    visible ? hide():show()
-  }
+  const onVisible = () => {
+    setVisible(!visible);
+  };
 
-  useEffect(async() => {
-    const response=await getUserByIdApi(user.id)
-    if(response){
-      dispatch(loginSuccess(response))
-    }  
-  }, []);
-  
   return (
     <div className={cx("wrapper")}>
       <div className={cx("wrap-search")}>
         <div>
-          <Search/>
+          <Search />
         </div>
         <Tippy
           interactive

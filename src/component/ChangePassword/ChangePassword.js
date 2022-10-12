@@ -7,7 +7,7 @@ import { changePasswordFailed } from "../../stores/slice/authSlice";
 import { changePassword } from "../../stores/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState} from "react";
 
 import styles from "./ChangePassword.module.scss";
 import classNames from "classnames/bind";
@@ -17,15 +17,15 @@ const cx = classNames.bind(styles);
 function ChangePassword() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [username, setusername] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const [disable, setDisable] = useState(true);
 
-  const errorChangePassword = useSelector(
-    (state) => state.auth.errorChangePassword
-  );
-  const idUser = useSelector((state) => state?.auth?.login?.currentUser?.id);
+  const { errorChangePassword, idUser } = useSelector((state) => ({
+    errorChangePassword: state.auth.errorChangePassword,
+    idUser: state?.auth?.login?.currentUser?.id,
+  }));
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -37,18 +37,14 @@ function ChangePassword() {
     );
     if (changePassword.fulfilled.match(response)) {
       handleClose();
-      alert('Success')
+      alert("Success");
       loginUser({ username, password }, dispatch, navigate);
     }
   };
 
-  const catchErrorUpdateUser = useCallback(() => {
+  useEffect(() => {
     dispatch(changePasswordFailed(""));
   }, [show, username, dispatch]);
-
-  useEffect(() => {
-    catchErrorUpdateUser();
-  }, [catchErrorUpdateUser]);
 
   useEffect(() => {
     password.length >= 6 ? setDisable(false) : setDisable(true);
@@ -65,7 +61,7 @@ function ChangePassword() {
               <Form.Control
                 type="text"
                 placeholder="Username"
-                onChange={(e) => setusername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <Form.Text className="text-muted">
                 We'll never share your username with anyone else.

@@ -1,18 +1,49 @@
 import React, { useMemo, useState, memo, useEffect, useRef } from "react";
 import Select from "react-select";
 import { MDBBtn } from "mdb-react-ui-kit";
+
 import { useSelector, useDispatch } from "react-redux";
 import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
+import { useCallback } from "react";
 import { STATUS } from "./constants";
 
 function Tasks({ data, reTasks, pendingRemoveTasks }) {
   const dispatch = useDispatch();
-  const paramTask = useSelector((state) => state.filterSlice.paramTask);
-  const listCategories = useSelector((state) => state?.categories?.list);
 
   const [editTask, setEdittask] = useState(false);
   const [cateOfTask, setCateOfTask] = useState();
   const [valueInputTask, setValueInputTask] = useState(data.title);
+
+  const formatDate = useCallback((date) => {
+    return (
+      date.getFullYear() +
+      "-" +
+      (date.getMonth() + 1) +
+      "-" +
+      date.getDate() +
+      "  " +
+      date.getHours() +
+      ":" +
+      date.getMinutes()
+    );
+  }, []);
+
+  const date = {
+    createdAt: formatDate(new Date(data?.createdAt)),
+    updatedAt: formatDate(new Date(data?.updatedAt)),
+  };
+
+  const [defaultCate] = useState(
+    data?.categories.map((item) => ({
+      value: item.id,
+      label: item.name,
+    }))
+  );
+
+  const { paramTask, listCategories } = useSelector((state) => ({
+    paramTask: state.filterSlice.paramTask,
+    listCategories: state?.categories?.list,
+  }));
 
   const inputEditRef = useRef();
   const dataUpdateTask = useRef({
@@ -21,30 +52,39 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
     status: data.status,
   });
 
-  const [defaultCate, setDefaultCate] = useState(
-    data?.categories.map((item, index) => ({
-      value: item.id,
-      label: item.name,
-    }))
-  );
-
-  const listcate = useMemo(() => {
+  const listCate = useMemo(() => {
     if (data.status === STATUS.COMPLETED) return [];
     const list = listCategories?.map((item, index) => ({
       value: item.id,
       label: item.name,
     }));
     return list;
-  }, [dataUpdateTask?.current,listCategories]);
-  
-  useEffect(() => {
+  }, [data.status, listCategories]);
+
+  const handleUpdateTask = useCallback(
+    async (data, id) => {
+      const response = await dispatch(updateTask({ id: id, datatask: data }));
+      if (updateTask.fulfilled.match(response)) {
+        dispatch(getTasks(paramTask));
+      } else {
+        alert("error");
+      }
+    },
+    [dispatch, paramTask]
+  );
+
+  const handleChangeCategory = useCallback(() => {
     if (!cateOfTask) return;
     dataUpdateTask.current = {
       ...dataUpdateTask.current,
       categoryIds: cateOfTask.map((list) => list.value),
     };
     handleUpdateTask(dataUpdateTask.current, data.id);
-  }, [cateOfTask]);
+  }, [cateOfTask, data.id, handleUpdateTask]);
+
+  useEffect(() => {
+    handleChangeCategory();
+  }, [cateOfTask, data.id, handleChangeCategory]);
 
   const updateTitleTask = async () => {
     dataUpdateTask.current = {
@@ -53,15 +93,6 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
     };
     await handleUpdateTask(dataUpdateTask.current, data.id);
     setEdittask(false);
-  };
-
-  const handleUpdateTask = async (data, id) => {
-    const response = await dispatch(updateTask({ id: id, datatask: data }));
-    if (updateTask.fulfilled.match(response)) {
-      dispatch(getTasks(paramTask));
-    } else {
-      alert("error");
-    }
   };
 
   const handleCompleted = async () => {
@@ -85,7 +116,7 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
       alert("error");
     }
   };
-  
+
   return (
     <>
       <tr>
@@ -122,24 +153,24 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
             defaultValue={defaultCate}
             isMulti
             name="colors"
-            options={listcate}
+            options={listCate}
             className="basic-multi-select"
             classNamePrefix="select"
-            isDisabled={data.status === "COMPLETED"}
+            isDisabled={data.status === STATUS.COMPLETED}
             onChange={setCateOfTask}
           />
         </td>
-        <td> {data?.createdAt}</td>
-        <td>{data?.updatedAt}</td>
+        <td> {date.createdAt}</td>
+        <td>{date.updatedAt}</td>
         <td>
           <input
             type="checkbox"
-            checked={data.status === "COMPLETED"}
+            checked={data.status === STATUS.COMPLETED}
             onChange={handleCompleted}
           ></input>
         </td>
         <td>
-          {data.status == "IN_PROGRESS" && (
+          {data.status === STATUS.IN_PROGRESS && (
             <span>
               <MDBBtn
                 color="success"

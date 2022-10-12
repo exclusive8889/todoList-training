@@ -1,7 +1,7 @@
 import Select from "react-select";
 import filterSlice from "../../stores/slice/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useRef, useState, useMemo, useEffect } from "react";
+import { useRef, useState, useMemo } from "react";
 import { addTask, getTasks, removeTask } from "../../stores/slice/taskSlice";
 
 import styles from "./Filter.module.scss";
@@ -11,9 +11,14 @@ const cx = classNames.bind(styles);
 function Filter() {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState([]);
-  const listCategories = useSelector((state) => state?.categories?.list);
-  const paramTask = useSelector((state) => state?.filterSlice?.paramTask);
-  const listRemoveMultiTask = useSelector((state) => state?.taskSlice?.removeTasks);
+
+  const { listCategories, paramTask, listRemoveMultiTask } = useSelector(
+    (state) => ({
+      listCategories: state?.categories?.list,
+      paramTask: state?.filterSlice?.paramTask,
+      listRemoveMultiTask: state?.taskSlice?.removeTasks,
+    })
+  );
 
   const valueAddtask = useRef({
     title: "",
@@ -57,20 +62,14 @@ function Filter() {
     await dispatch(filterSlice.actions.setStatus(status));
   };
 
-  useEffect(()=>{
-    const fetchTasks=async()=>{
-      await dispatch(getTasks(paramTask));
-    }
-    fetchTasks()
-  },[paramTask])
-
   return (
     <div className={cx("wraper")}>
       <div className={cx("optinon-filter")}>
         <div className={cx("addTask")}>
           <button onClick={handleAddtask}>Add Task</button>
           <div>
-            <input placeholder="Add Title"
+            <input
+              placeholder="Add Title"
               onChange={(e) => {
                 valueAddtask.current.title = e.target.value;
               }}

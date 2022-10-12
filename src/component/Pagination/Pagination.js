@@ -11,8 +11,11 @@ const cx = classNames.bind(styles);
 
 function PaginatedItems() {
   const dispatch = useDispatch();
-  const meta = useSelector((state) => state.taskSlice.meta);
-  const paramTask = useSelector((state) => state.filterSlice.paramTask);
+
+  const { meta, paramTask } = useSelector((state) => ({
+    meta: state.taskSlice.meta,
+    paramTask: state.filterSlice.paramTask,
+  }));
   const pages = [];
 
   for (let i = 1; i <= meta.totalPages; i++) {
@@ -22,25 +25,23 @@ function PaginatedItems() {
   const listPages = pages.map((page) => (
     <li
       key={page}
-      className={cx("page-item")}
+      className={cx("page-item", "cursorPointer")}
       onClick={() => {
         onPageChange(page, false);
       }}
     >
-      <a
-        className={cx("page-link", meta.currentPage == page ? "active" : null)}
+      <p
+        className={cx("page-link", meta.currentPage === page ? "active" : null)}
       >
         {page}
-      </a>
+      </p>
     </li>
   ));
 
   const onPageChange = async (page, stateNextPre) => {
-    if (stateNextPre) {
-      await dispatch(filterSlice.actions.setCurrentPage(paramTask.page + page));
-    } else {
-      await dispatch(filterSlice.actions.setCurrentPage(page));
-    }
+    stateNextPre
+      ? await dispatch(filterSlice.actions.setCurrentPage(paramTask.page + page))
+      : await dispatch(filterSlice.actions.setCurrentPage(page));
   };
 
   return (

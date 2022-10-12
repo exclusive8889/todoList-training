@@ -14,11 +14,11 @@ function Home() {
   const dispatch = useDispatch();
   const fetchCategories = useCallback(async () => {
     await dispatch(getCategories());
-  }, []);
+  }, [dispatch]);
   
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [fetchCategories]);
   return (
     <>
       <Header />

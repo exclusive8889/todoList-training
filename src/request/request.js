@@ -16,15 +16,8 @@ const requestHandler = async(config) => {
 
 const responseErrorHandler = async (error) => {
   if (error?.response?.status === 401) {
-    // alert(error?.response?.data.error.message)
     logout();
   }
-  // const data= error?.response?.data;
-  // const message = data?.message;
-
-  // if (message) {
-  //   throw new Error(message);
-  // }
   return Promise.reject(error);
 };
 

@@ -3,32 +3,35 @@ import styles from "./Search.module.scss";
 import useDebounce from "../../hooks/useDebounce";
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { getTasks } from "../../stores/slice/taskSlice";
 
 const cx = classNames.bind(styles);
 function Search() {
-    const dispatch = useDispatch();
-    const [searchText, setSearchText] = useState("");
-    const paramTask = useSelector((state) => state.filterSlice.paramTask);
-    const valueSearch = useDebounce(searchText, 800);
-    const handleSearchTextTask =(e)=>{ setSearchText(e.target.value)}
+  const dispatch = useDispatch();
+  const [searchText, setSearchText] = useState("");
+  const paramTask = useSelector((state) => state?.filterSlice?.paramTask);
+  const valueSearch = useDebounce(searchText, 800);
 
-    useEffect(()=>{
-        if(searchText=='') dispatch(getTasks(paramTask));
-        else{       
-            dispatch(getTasks({ ...paramTask, title:valueSearch}));
-        }
-    },[valueSearch])
+  const handleSearchTextTask = (e) => {
+    setSearchText(e.target.value);
+  };
 
-    return (    
-        <div className={cx("search")}>
-        <input
-          placeholder="Search task"
-          className={cx("search-input", "search--height")}
-          onChange={handleSearchTextTask}
-        ></input>
-      </div>
-      );
+  useEffect(() => {
+    if (valueSearch === "") dispatch(getTasks(paramTask));
+    else {
+      dispatch(getTasks({ ...paramTask, title: valueSearch }));
+    }
+  }, [dispatch, paramTask, valueSearch]);
+
+  return (
+    <div className={cx("search")}>
+      <input
+        placeholder="Search task"
+        className={cx("search-input", "search--height")}
+        onChange={handleSearchTextTask}
+      ></input>
+    </div>
+  );
 }
 export default Search;
