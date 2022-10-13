@@ -4,11 +4,12 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { logout } from "../../utils/apiRequest";
+
 import ChangePassword from "../../component/ChangePassword/ChangePassword";
 import Search from "../../component/Search/Search";
-
-import "tippy.js/dist/tippy.css";
 import Tippy from "@tippyjs/react/headless";
+import "tippy.js/dist/tippy.css";
+
 
 import styles from "./Header.module.scss";
 import classNames from "classnames/bind";
@@ -17,12 +18,8 @@ const cx = classNames.bind(styles);
 function Header() {
   const user = useSelector((state) => state.auth.login?.currentUser);
   const [visible, setVisible] = useState(false);
-  
   const hide = () => setVisible(false);
-
-  const onVisible = () => {
-    setVisible(!visible);
-  };
+  const onVisible = () => setVisible(!visible);
 
   return (
     <div className={cx("wrapper")}>

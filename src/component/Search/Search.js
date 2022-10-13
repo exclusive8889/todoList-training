@@ -1,11 +1,11 @@
-import classNames from "classnames/bind";
-import styles from "./Search.module.scss";
 import useDebounce from "../../hooks/useDebounce";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getTasks } from "../../stores/slice/taskSlice";
 
+import classNames from "classnames/bind";
+import styles from "./Search.module.scss";
 const cx = classNames.bind(styles);
 function Search() {
   const dispatch = useDispatch();

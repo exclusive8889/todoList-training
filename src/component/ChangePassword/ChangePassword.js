@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 
-import { Message_LoginAuth } from "../../pages/Auth/constants";
+import { messageLoginAuth } from "../../pages/Auth/constants";
 import { changePasswordFailed } from "../../stores/slice/authSlice";
 import { changePassword } from "../../stores/slice/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +76,7 @@ function ChangePassword() {
               />
               {disable && (
                 <label className="text-error">
-                  {Message_LoginAuth.MIN_6CHAR}
+                  {messageLoginAuth.MIN_6CHAR}
                 </label>
               )}
             </Form.Group>

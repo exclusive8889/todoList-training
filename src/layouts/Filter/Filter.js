@@ -1,4 +1,5 @@
 import Select from "react-select";
+
 import filterSlice from "../../stores/slice/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState, useMemo } from "react";
@@ -7,6 +8,7 @@ import taskSlice, {
   getTasks,
   removeTask,
 } from "../../stores/slice/taskSlice";
+import { STATUS } from "../Task/constants";
 
 import styles from "./Filter.module.scss";
 import classNames from "classnames/bind";
@@ -30,7 +32,7 @@ function Filter() {
   });
 
   const listcate = useMemo(() => {
-    const list = listCategories?.map((item, index) => ({
+    const list = listCategories?.map((item) => ({
       value: item.id,
       label: item.name,
     }));
@@ -43,7 +45,7 @@ function Filter() {
     if (addTask.fulfilled.match(response)) {
       await dispatch(getTasks(paramTask));
     } else {
-      alert("error");
+      alert(response.payload);
     }
   };
 
@@ -53,7 +55,7 @@ function Filter() {
       const response = await dispatch(removeTask(listRemoveMultiTask[i]));
       if (removeTask.fulfilled.match(response)) {
       } else {
-        alert("error");
+        alert(response.payload);
         arr.push(listRemoveMultiTask[i]);
       }
     }
@@ -117,8 +119,8 @@ function Filter() {
             }}
           >
             <option value={""}>all</option>
-            <option value={"COMPLETED"}>Complete</option>
-            <option value={"IN_PROGRESS"}>IN_PROGRESS</option>
+            <option value={STATUS.COMPLETED}>{STATUS.COMPLETED}</option>
+            <option value={STATUS.IN_PROGRESS}>{STATUS.IN_PROGRESS}</option>
           </select>
         </div>
         <button onClick={handleRemoveMultiTasks}>Delete</button>

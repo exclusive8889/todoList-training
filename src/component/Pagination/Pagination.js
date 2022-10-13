@@ -16,12 +16,11 @@ function PaginatedItems() {
     meta: state.taskSlice.meta,
     paramTask: state.filterSlice.paramTask,
   }));
-  const pages = [];
 
+  const pages = [];
   for (let i = 1; i <= meta.totalPages; i++) {
     pages.push(i);
   }
-
   const listPages = pages.map((page) => (
     <li
       key={page}

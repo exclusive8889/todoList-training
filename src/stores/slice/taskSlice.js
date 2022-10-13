@@ -44,22 +44,21 @@ const taskSlice = createSlice({
       .addCase(addTask.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addTask.rejected, (state) => {
+      .addCase(addTask.rejected, (state, action) => {
         state.loading = false;
-        state.error = true;
+        state.error = action.payload;
       })
 
       .addCase(removeTask.fulfilled, (state, action) => {
-        state.removeTasks = [];
         state.loading = false;
         state.error = false;
       })
       .addCase(removeTask.pending, (state) => {
         state.loading = true;
       })
-      .addCase(removeTask.rejected, (state) => {
+      .addCase(removeTask.rejected, (state, action) => {
+        state.error = action.payload;
         state.loading = false;
-        state.error = true;
       })
 
       .addCase(updateTask.fulfilled, (state, action) => {
@@ -97,7 +96,7 @@ export const addTask = createAsyncThunk(
     try {
       const res = await addTaskApi(task);
       if (res.status === 201) return res.data;
-      return rejectWithValue(res.data.error.message);
+      return rejectWithValue(res.response.data.error.message);
     } catch (error) {
       return rejectWithValue(error.response.data.error.message);
     }
@@ -110,7 +109,7 @@ export const removeTask = createAsyncThunk(
     try {
       const res = await removeTaskApi(idtask);
       if (res.status === STATUSCODES.SUCCESS_DELETE) return res.data;
-      return rejectWithValue(res.data.error.message);
+      return rejectWithValue(res.response.data.error.message);
     } catch (error) {
       return rejectWithValue(error.response.data.error.message);
     }
@@ -123,7 +122,7 @@ export const updateTask = createAsyncThunk(
     try {
       const res = await updateTaskApi(dataUpdate);
       if (res.status === STATUSCODES.SUCCESS_GET_UPDATE) return res.data;
-      return rejectWithValue(res.data.error.message);
+      return rejectWithValue(res.response.data.error.message);
     } catch (error) {
       return rejectWithValue(error.response.data.error.message);
     }

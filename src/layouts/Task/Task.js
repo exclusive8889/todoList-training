@@ -9,7 +9,6 @@ import { STATUS } from "./constants";
 
 function Tasks({ data, reTasks, pendingRemoveTasks }) {
   const dispatch = useDispatch();
-
   const [editTask, setEdittask] = useState(false);
   const [cateOfTask, setCateOfTask] = useState();
   const [valueInputTask, setValueInputTask] = useState(data.title);
@@ -49,7 +48,7 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
 
   const listCate = useMemo(() => {
     if (data.status === STATUS.COMPLETED) return [];
-    const list = listCategories?.map((item, index) => ({
+    const list = listCategories?.map((item) => ({
       value: item.id,
       label: item.name,
     }));
@@ -62,24 +61,11 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
       if (updateTask.fulfilled.match(response)) {
         dispatch(getTasks(paramTask));
       } else {
-        alert("error");
+        alert(response.payload);
       }
     },
     [dispatch, paramTask]
   );
-
-  const handleChangeCategory = useCallback(() => {
-    if (!cateOfTask) return;
-    dataUpdateTask.current = {
-      ...dataUpdateTask.current,
-      categoryIds: cateOfTask.map((list) => list.value),
-    };
-    handleUpdateTask(dataUpdateTask.current, data.id);
-  }, [cateOfTask, data.id, handleUpdateTask]);
-
-  useEffect(() => {
-    handleChangeCategory();
-  }, [cateOfTask, data.id, handleChangeCategory]);
 
   const updateTitleTask = async () => {
     dataUpdateTask.current = {
@@ -103,14 +89,27 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
     await handleUpdateTask(dataUpdateTask.current, data.id);
   };
 
+  const handleChangeCategory = useCallback(() => {
+    if (!cateOfTask) return;
+    dataUpdateTask.current = {
+      ...dataUpdateTask.current,
+      categoryIds: cateOfTask.map((list) => list.value),
+    };
+    handleUpdateTask(dataUpdateTask.current, data.id);
+  }, [cateOfTask, data.id, handleUpdateTask]);
+
   const handleDeleteTask = async (id) => {
     const response = await dispatch(removeTask(id));
     if (removeTask.fulfilled.match(response)) {
       await dispatch(getTasks(paramTask));
     } else {
-      alert("error");
+      alert(response.payload);
     }
   };
+
+  useEffect(() => {
+    handleChangeCategory();
+  }, [cateOfTask, data.id, handleChangeCategory]);
 
   return (
     <>

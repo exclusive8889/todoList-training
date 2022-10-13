@@ -1,16 +1,16 @@
 import { register } from "../../../stores/slice/authSlice";
-import { Message_LoginAuth } from "../constants";
+import { messageLoginAuth } from "../constants";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
 function Register({ changeAuthMode }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const errorRegister = useSelector((state) => state.auth.errorRegister);
+  const [errorRegister, setErrorRegister] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -19,13 +19,13 @@ function Register({ changeAuthMode }) {
       confirmpw: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string().required(Message_LoginAuth.REQUIRED_USERNAME),
+      username: Yup.string().required(messageLoginAuth.REQUIRED_USERNAME),
       password: Yup.string()
-        .required(Message_LoginAuth.REQUIRED_PASSWORD)
-        .min(6, Message_LoginAuth.MIN_6CHAR),
+        .required(messageLoginAuth.REQUIRED_PASSWORD)
+        .min(6, messageLoginAuth.MIN_6CHAR),
       confirmpw: Yup.string()
-        .required(Message_LoginAuth.REQUIRED_CONFIRMPW)
-        .oneOf([Yup.ref("password"), null], Message_LoginAuth.CONFIRM_PASSWORD),
+        .required(messageLoginAuth.REQUIRED_CONFIRMPW)
+        .oneOf([Yup.ref("password"), null], messageLoginAuth.CONFIRM_PASSWORD),
     }),
   });
 
@@ -40,6 +40,8 @@ function Register({ changeAuthMode }) {
       alert("Success");
       navigate("/sign-in");
       changeAuthMode();
+    } else {
+      setErrorRegister(response.payload);
     }
   };
 

@@ -6,8 +6,8 @@ const axiosInstance = axios.create({
   baseURL: "https://www.task-manager.api.mvn-training.com",
 });
 
-export const requestHandler = async(config) => {
-  const atk=getTokenStorage()
+export const requestHandler = async (config) => {
+  const atk = getTokenStorage();
   config.headers = {
     Authorization: `Bearer ${atk}`,
   };

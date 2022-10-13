@@ -6,10 +6,8 @@ import Signin from "./Login/Signin";
 
 export default function Login() {
   const [authMode, setAuthMode] = useState(true);
-  const changeAuthMode = () => {
-    setAuthMode(!authMode);
-  };
-
+  const changeAuthMode = () => setAuthMode(!authMode);
+  
   if (authMode) {
     return <Signin changeAuthMode={changeAuthMode} />;
   }

@@ -1,4 +1,4 @@
-export const Message_LoginAuth={
+export const messageLoginAuth={
     REQUIRED_USERNAME:"Please input your username",
     REQUIRED_PASSWORD:"Please input your password",
     REQUIRED_CONFIRMPW:"Required confirm password",

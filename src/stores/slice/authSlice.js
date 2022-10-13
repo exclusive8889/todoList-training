@@ -27,7 +27,6 @@ const authSlice = createSlice({
   extraReducers: (buider) => {
     buider
       .addCase(signin.fulfilled, (state, action) => {
-        console.log('1')
         state.login.currentUser = action.payload;
         state.accessToken = action.payload.accessToken;
         state.login.isFetching = false;

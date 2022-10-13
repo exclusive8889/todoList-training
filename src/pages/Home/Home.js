@@ -15,11 +15,11 @@ function Home() {
   const fetchCategories = useCallback(async () => {
     await dispatch(getCategories());
   }, [dispatch]);
-  
+
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
-  
+
   return (
     <>
       <Header />

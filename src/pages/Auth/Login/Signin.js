@@ -1,5 +1,5 @@
 import { loginUser } from "../../../utils/apiRequest";
-import { Message_LoginAuth } from "../constants";
+import { messageLoginAuth } from "../constants";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
 import "./SignIn.scss";
@@ -18,10 +18,10 @@ function Signin({ changeAuthMode }) {
       password: "",
     },
     validationSchema: Yup.object({
-      username: Yup.string().required(Message_LoginAuth.REQUIRED_USERNAME),
+      username: Yup.string().required(messageLoginAuth.REQUIRED_USERNAME),
       password: Yup.string()
-        .required(Message_LoginAuth.REQUIRED_PASSWORD)
-        .min(6, Message_LoginAuth.MIN_6CHAR),
+        .required(messageLoginAuth.REQUIRED_PASSWORD)
+        .min(6, messageLoginAuth.MIN_6CHAR),
     }),
     onSubmit: async(user) => {
       await loginUser(user, dispatch, navigate);

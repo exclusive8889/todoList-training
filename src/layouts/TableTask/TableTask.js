@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react";
 import { MDBTable, MDBTableHead, MDBTableBody } from "mdb-react-ui-kit";
-import { useSelector, useDispatch } from "react-redux";
 import Tasks from "../Task/Task";
-import taskSlice from "../../stores/slice/taskSlice";
 import Loading from "../../component/Loading/Loading";
 import PaginatedItems from "../../component/Pagination/Pagination";
+
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import taskSlice from "../../stores/slice/taskSlice";
 
 function TableTask() {
   const dispatch = useDispatch();
   const [pendingRemoveTasks, setPendingRemoveTask] = useState([]);
-
-  const { items, loading, tassss } = useSelector((state) => ({
+  const { items, loading, listRemoveTasks } = useSelector((state) => ({
     items: state?.taskSlice.items,
     loading: state?.taskSlice.loading,
-    tassss: state.taskSlice.removeTasks,
+    listRemoveTasks: state.taskSlice.removeTasks,
   }));
-  // const tassss = useSelector((state) => state.taskSlice.removeTasks);
 
   const reTasks = (id) => {
     setPendingRemoveTask((pre) => {
@@ -33,8 +32,8 @@ function TableTask() {
   }, [pendingRemoveTasks, dispatch]);
 
   useEffect(() => {
-    setPendingRemoveTask(tassss);
-  }, [tassss]);
+    setPendingRemoveTask(listRemoveTasks);
+  }, [listRemoveTasks]);
 
   if (loading) return <Loading />;
   return (
