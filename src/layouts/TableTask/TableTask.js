@@ -8,10 +8,16 @@ import PaginatedItems from "../../component/Pagination/Pagination";
 
 function TableTask() {
   const dispatch = useDispatch();
-  const { items, loading } = useSelector((state) => state?.taskSlice);
   const [pendingRemoveTasks, setPendingRemoveTask] = useState([]);
 
-  const reTasks =((id) => {
+  const { items, loading, tassss } = useSelector((state) => ({
+    items: state?.taskSlice.items,
+    loading: state?.taskSlice.loading,
+    tassss: state.taskSlice.removeTasks,
+  }));
+  // const tassss = useSelector((state) => state.taskSlice.removeTasks);
+
+  const reTasks = (id) => {
     setPendingRemoveTask((pre) => {
       const isChecked = pendingRemoveTasks.includes(id);
       if (isChecked) {
@@ -20,11 +26,15 @@ function TableTask() {
         return [...pre, id];
       }
     });
-  });
+  };
 
   useEffect(() => {
     dispatch(taskSlice.actions.removeTasks(pendingRemoveTasks));
-  }, [pendingRemoveTasks,dispatch]);
+  }, [pendingRemoveTasks, dispatch]);
+
+  useEffect(() => {
+    setPendingRemoveTask(tassss);
+  }, [tassss]);
 
   if (loading) return <Loading />;
   return (
@@ -51,7 +61,7 @@ function TableTask() {
         ))}
       </MDBTableBody>
       <div>
-        <PaginatedItems/>
+        <PaginatedItems />
       </div>
     </MDBTable>
   );

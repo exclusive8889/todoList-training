@@ -2,7 +2,11 @@ import Select from "react-select";
 import filterSlice from "../../stores/slice/searchSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState, useMemo } from "react";
-import { addTask, getTasks, removeTask } from "../../stores/slice/taskSlice";
+import taskSlice, {
+  addTask,
+  getTasks,
+  removeTask,
+} from "../../stores/slice/taskSlice";
 
 import styles from "./Filter.module.scss";
 import classNames from "classnames/bind";
@@ -44,13 +48,16 @@ function Filter() {
   };
 
   const handleRemoveMultiTasks = async () => {
+    const arr = [];
     for (let i = 0; i < listRemoveMultiTask.length; i++) {
       const response = await dispatch(removeTask(listRemoveMultiTask[i]));
       if (removeTask.fulfilled.match(response)) {
       } else {
         alert("error");
+        arr.push(listRemoveMultiTask[i]);
       }
     }
+    await dispatch(taskSlice.actions.removeTasks(arr));
     await dispatch(getTasks(paramTask));
   };
 

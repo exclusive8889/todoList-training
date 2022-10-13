@@ -50,6 +50,7 @@ const taskSlice = createSlice({
       })
 
       .addCase(removeTask.fulfilled, (state, action) => {
+        state.removeTasks = [];
         state.loading = false;
         state.error = false;
       })

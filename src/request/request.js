@@ -1,13 +1,13 @@
 import axios from "axios";
 import { logout } from "../utils/apiRequest";
-
+import { getTokenStorage } from "../utils/auth.util";
 
 const axiosInstance = axios.create({
   baseURL: "https://www.task-manager.api.mvn-training.com",
 });
 
-const requestHandler = async(config) => {
-  const atk = localStorage.getItem("accessToken");
+export const requestHandler = async(config) => {
+  const atk=getTokenStorage()
   config.headers = {
     Authorization: `Bearer ${atk}`,
   };

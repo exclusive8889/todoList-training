@@ -35,7 +35,7 @@ export const getUserByIdApi = async (id) => {
     });
 };
 
-export const getCategoriesByApi = async () => {
+export const getCategoriesApi = async () => {
   return await ApiClient.get("/api/categories")
     .then((response) => response)
     .catch((error) => {

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCategoriesByApi } from "../../utils/fetchApi";
+import { getCategoriesApi } from "../../utils/fetchApi";
 import { STATUSCODES } from "../constans";
 
 const cateSlice = createSlice({
@@ -31,7 +31,7 @@ export const getCategories = createAsyncThunk(
   "cates/getCategories",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getCategoriesByApi();
+      const response = await getCategoriesApi();
       if (response.status === STATUSCODES.SUCCESS_GET_UPDATE) {
         return response.data.data;
       }

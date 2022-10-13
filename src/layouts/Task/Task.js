@@ -28,11 +28,6 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
     );
   }, []);
 
-  const date = {
-    createdAt: formatDate(new Date(data?.createdAt)),
-    updatedAt: formatDate(new Date(data?.updatedAt)),
-  };
-
   const [defaultCate] = useState(
     data?.categories.map((item) => ({
       value: item.id,
@@ -160,8 +155,8 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
             onChange={setCateOfTask}
           />
         </td>
-        <td> {date.createdAt}</td>
-        <td>{date.updatedAt}</td>
+        <td> {formatDate(new Date(data?.createdAt))}</td>
+        <td>{formatDate(new Date(data?.updatedAt))}</td>
         <td>
           <input
             type="checkbox"
