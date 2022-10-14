@@ -7,11 +7,11 @@ import { changePasswordFailed } from "../../stores/slice/authSlice";
 import { changePassword } from "../../stores/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { loginUser } from "../../utils/apiRequest";
 
 import styles from "./ChangePassword.module.scss";
 import classNames from "classnames/bind";
-import { loginUser } from "../../utils/apiRequest";
 const cx = classNames.bind(styles);
 
 function ChangePassword() {

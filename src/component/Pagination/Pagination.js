@@ -11,7 +11,6 @@ const cx = classNames.bind(styles);
 
 function PaginatedItems() {
   const dispatch = useDispatch();
-
   const { meta, paramTask } = useSelector((state) => ({
     meta: state.taskSlice.meta,
     paramTask: state.filterSlice.paramTask,
@@ -39,7 +38,9 @@ function PaginatedItems() {
 
   const onPageChange = async (page, stateNextPre) => {
     stateNextPre
-      ? await dispatch(filterSlice.actions.setCurrentPage(paramTask.page + page))
+      ? await dispatch(
+          filterSlice.actions.setCurrentPage(paramTask.page + page)
+        )
       : await dispatch(filterSlice.actions.setCurrentPage(page));
   };
 

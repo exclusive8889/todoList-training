@@ -3,7 +3,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { logout } from "../../utils/apiRequest";
+import { logOut } from "../../utils/apiRequest";
 
 import ChangePassword from "../../component/ChangePassword/ChangePassword";
 import Search from "../../component/Search/Search";
@@ -35,7 +35,7 @@ function Header() {
             <div className="box" tabIndex="-1" {...attrs}>
               <div className={cx("option-user")} onClick={hide}>
                 <ChangePassword />
-                <button onClick={logout}>Log out</button>
+                <button onClick={logOut}>Log out</button>
               </div>
             </div>
           )}

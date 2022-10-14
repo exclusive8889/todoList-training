@@ -5,6 +5,7 @@ import PaginatedItems from "../../component/Pagination/Pagination";
 
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
 import taskSlice from "../../stores/slice/taskSlice";
 
 function TableTask() {

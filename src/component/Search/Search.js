@@ -7,15 +7,13 @@ import { getTasks } from "../../stores/slice/taskSlice";
 import classNames from "classnames/bind";
 import styles from "./Search.module.scss";
 const cx = classNames.bind(styles);
+
 function Search() {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const paramTask = useSelector((state) => state?.filterSlice?.paramTask);
   const valueSearch = useDebounce(searchText, 800);
-
-  const handleSearchTextTask = (e) => {
-    setSearchText(e.target.value);
-  };
+  const handleSearchTextTask = (e) => setSearchText(e.target.value);
 
   useEffect(() => {
     if (valueSearch === "") dispatch(getTasks(paramTask));

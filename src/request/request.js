@@ -1,5 +1,5 @@
 import axios from "axios";
-import { logout } from "../utils/apiRequest";
+import { logOut } from "../utils/apiRequest";
 import { getTokenStorage } from "../utils/auth.util";
 
 const axiosInstance = axios.create({
@@ -16,7 +16,7 @@ export const requestHandler = async (config) => {
 
 const responseErrorHandler = async (error) => {
   if (error?.response?.status === 401) {
-    logout();
+    logOut();
   }
   return Promise.reject(error);
 };

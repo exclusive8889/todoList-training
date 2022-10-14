@@ -1,5 +1,4 @@
 import { signin } from "../stores/slice/authSlice";
-import { removeAccessToken } from "./auth.util";
 
 export const loginUser = async (user, dispatch, navigate) => {
   const response = await dispatch(signin(user));
@@ -8,7 +7,7 @@ export const loginUser = async (user, dispatch, navigate) => {
   }
 };
 
-export const logout = async () => {
-  removeAccessToken();
+export const logOut = async () => {
+  localStorage.removeItem("persist:user");
   window.location.href = "/sign-in";
 };

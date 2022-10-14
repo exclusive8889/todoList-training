@@ -23,6 +23,9 @@ const authSlice = createSlice({
     changePasswordFailed: (state, action) => {
       state.errorChangePassword = action.payload;
     },
+    logOut: (state) => {
+      state.initialState = null;
+    },
   },
   extraReducers: (buider) => {
     buider
