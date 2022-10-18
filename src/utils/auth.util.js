@@ -1,6 +1,6 @@
 export const getTokenStorage = () => {
-  const settk = JSON.parse(localStorage.getItem("persist:user"));
-  if (!settk) return;
-  const accessToken = JSON.parse(settk.auth).accessToken;
+  const token = JSON.parse(localStorage.getItem("persist:user"));
+  if (!token) return;
+  const accessToken = JSON.parse(token.auth).accessToken;
   return accessToken;
 };
