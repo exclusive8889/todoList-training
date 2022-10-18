@@ -6,12 +6,9 @@ import "mdb-react-ui-kit/dist/css/mdb.min.css";
 
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-
 import { persist, store } from "./stores";
-import { Provider } from "react-redux";
-import React from "react";
-
 import { PersistGate } from "redux-persist/integration/react";
+import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

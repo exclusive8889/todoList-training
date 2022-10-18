@@ -8,9 +8,8 @@ import { getTokenStorage } from "../utils/auth.util";
 function Routes() {
   const navigate = useNavigate();
   const accessToken = getTokenStorage();
-
   useEffect(() => {
-    (!accessToken) ? navigate("/sign-in") : navigate("/");
+    !accessToken ? navigate("/sign-in") : navigate("/");
   }, [accessToken, navigate]);
 
   return (

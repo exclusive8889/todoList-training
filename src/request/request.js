@@ -7,9 +7,9 @@ const axiosInstance = axios.create({
 });
 
 export const requestHandler = async (config) => {
-  const atk = getTokenStorage();
+  const accessToken = getTokenStorage();
   config.headers = {
-    Authorization: `Bearer ${atk}`,
+    Authorization: `Bearer ${accessToken}`,
   };
   return config;
 };

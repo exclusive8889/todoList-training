@@ -10,5 +10,4 @@ function AuthorizedRoutes({ isAuthenticated = true }) {
     </Routes>
   );
 }
-
 export default AuthorizedRoutes;

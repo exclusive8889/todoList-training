@@ -65,7 +65,7 @@ function PaginatedItems() {
           {meta.currentPage < meta.totalPages && (
             <li className={cx("page-next")}>
               <button
-                clbuttonssName={cx("page-link")}
+                clbuttonsname={cx("page-link")}
                 onClick={() => {
                   onPageChange(1, true);
                 }}

@@ -1,11 +1,16 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+  getDefaultMiddleware,
+} from "@reduxjs/toolkit";
+
 import authSlice from "./slice/authSlice";
 import cateSlice from "./slice/categoriesSlice";
 import taskSlice from "./slice/taskSlice";
 import filterSlice from "./slice/searchSlice";
 
-import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { persistStore, persistReducer } from "redux-persist";
 
 const persistConfig = {
   key: "user",
@@ -24,6 +29,9 @@ const persistedReducer = persistReducer(persistConfig, reducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });
 
 export const persist = persistStore(store);

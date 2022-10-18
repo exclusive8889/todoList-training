@@ -5,10 +5,10 @@ import Form from "react-bootstrap/Form";
 import { messageLoginAuth } from "../../pages/Auth/constants";
 import { changePasswordFailed } from "../../stores/slice/authSlice";
 import { changePassword } from "../../stores/slice/authSlice";
+import { loginUser } from "../../utils/apiRequest";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { loginUser } from "../../utils/apiRequest";
 
 import styles from "./ChangePassword.module.scss";
 import classNames from "classnames/bind";

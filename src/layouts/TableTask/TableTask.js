@@ -38,32 +38,34 @@ function TableTask() {
 
   if (loading) return <Loading />;
   return (
-    <MDBTable bordered>
-      <MDBTableHead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Title</th>
-          <th scope="col">Categories</th>
-          <th scope="col">Create at</th>
-          <th scope="col">Update at</th>
-          <th scope="col">Complete</th>
-          <th scope="col">Option</th>
-        </tr>
-      </MDBTableHead>
-      <MDBTableBody>
-        {items?.map((item) => (
-          <Tasks
-            key={item.id}
-            data={item}
-            reTasks={reTasks}
-            pendingRemoveTasks={pendingRemoveTasks}
-          />
-        ))}
-      </MDBTableBody>
+    <>
+      <MDBTable bordered>
+        <MDBTableHead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Categories</th>
+            <th scope="col">Create at</th>
+            <th scope="col">Update at</th>
+            <th scope="col">Complete</th>
+            <th scope="col">Option</th>
+          </tr>
+        </MDBTableHead>
+        <MDBTableBody>
+          {items?.map((item) => (
+            <Tasks
+              key={item.id}
+              data={item}
+              reTasks={reTasks}
+              pendingRemoveTasks={pendingRemoveTasks}
+            />
+          ))}
+        </MDBTableBody>
+      </MDBTable>
       <div>
         <PaginatedItems />
       </div>
-    </MDBTable>
+    </>
   );
 }
 export default TableTask;

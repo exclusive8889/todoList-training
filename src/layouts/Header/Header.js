@@ -10,7 +10,6 @@ import Search from "../../component/Search/Search";
 import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css";
 
-
 import styles from "./Header.module.scss";
 import classNames from "classnames/bind";
 const cx = classNames.bind(styles);

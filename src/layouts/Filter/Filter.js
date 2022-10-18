@@ -96,7 +96,7 @@ function Filter() {
           </div>
         </div>
         <div>
-          <label for="cars">Number of tasks:</label>
+          <label htmlFor="cars">Number of tasks:</label>
           <select
             name="cars"
             id="cars"

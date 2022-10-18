@@ -23,11 +23,11 @@ function Signin({ changeAuthMode }) {
         .required(messageLoginAuth.REQUIRED_PASSWORD)
         .min(6, messageLoginAuth.MIN_6CHAR),
     }),
-    onSubmit: async(user) => {
+    onSubmit: async (user) => {
       await loginUser(user, dispatch, navigate);
     },
   });
-  
+
   return (
     <div className="Auth-form-container">
       <form className="Auth-form" onSubmit={formik.handleSubmit}>
