@@ -1,4 +1,4 @@
-import React, { useMemo, useState, memo, useEffect, useRef } from "react";
+import React, { useMemo, useState, memo, useRef } from "react";
 import Select from "react-select";
 import { MDBBtn } from "mdb-react-ui-kit";
 
@@ -10,7 +10,6 @@ import { STATUS } from "./constants";
 function Tasks({ data, reTasks, pendingRemoveTasks }) {
   const dispatch = useDispatch();
   const [editTask, setEdittask] = useState(false);
-  const [cateOfTask, setCateOfTask] = useState();
   const [valueInputTask, setValueInputTask] = useState(data.title);
 
   const formatDate = useCallback((date) => {
@@ -89,27 +88,22 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
     await handleUpdateTask(dataUpdateTask.current, data.id);
   };
 
-  const handleChangeCategory = useCallback(() => {
-    if (!cateOfTask) return;
+  const handleChangeCategory = (defaultCate) => {
     dataUpdateTask.current = {
       ...dataUpdateTask.current,
-      categoryIds: cateOfTask.map((list) => list.value),
+      categoryIds: defaultCate.map((list) => list.value),
     };
     handleUpdateTask(dataUpdateTask.current, data.id);
-  }, [cateOfTask, data.id, handleUpdateTask]);
+  };
 
   const handleDeleteTask = async (id) => {
     const response = await dispatch(removeTask(id));
     if (removeTask.fulfilled.match(response)) {
-      await dispatch(getTasks(paramTask));
+      dispatch(getTasks(paramTask));
     } else {
       alert(response.payload);
     }
   };
-
-  useEffect(() => {
-    handleChangeCategory();
-  }, [cateOfTask, data.id, handleChangeCategory]);
 
   return (
     <>
@@ -144,14 +138,14 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
         <td>
           <Select
             closeMenuOnSelect={false}
-            defaultValue={defaultCate}
+            value={defaultCate}
             isMulti
             name="colors"
             options={listCate}
             className="basic-multi-select"
             classNamePrefix="select"
             isDisabled={data.status === STATUS.COMPLETED}
-            onChange={setCateOfTask}
+            onChange={handleChangeCategory}
           />
         </td>
         <td> {formatDate(new Date(data?.createdAt))}</td>
@@ -193,5 +187,4 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
     </>
   );
 }
-
 export default memo(Tasks);

@@ -20,7 +20,7 @@ function ChangePassword() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const [disable, setDisable] = useState(true);
+  const [disable, setDisable] = useState(false);
 
   const { errorChangePassword, idUser } = useSelector((state) => ({
     errorChangePassword: state.auth.errorChangePassword,
@@ -44,6 +44,7 @@ function ChangePassword() {
 
   useEffect(() => {
     dispatch(changePasswordFailed(""));
+    setDisable(false);
   }, [show, username, dispatch]);
 
   useEffect(() => {
