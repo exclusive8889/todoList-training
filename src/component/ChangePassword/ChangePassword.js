@@ -33,7 +33,7 @@ function ChangePassword() {
   const handleChangePassword = async (e) => {
     e.preventDefault();
     const response = await dispatch(
-      await changePassword({ id: idUser, username, newPassword: password })
+      changePassword({ id: idUser, username, newPassword: password })
     );
     if (changePassword.fulfilled.match(response)) {
       handleClose();

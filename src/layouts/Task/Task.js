@@ -4,7 +4,6 @@ import { MDBBtn } from "mdb-react-ui-kit";
 
 import { useSelector, useDispatch } from "react-redux";
 import { updateTask, removeTask, getTasks } from "../../stores/slice/taskSlice";
-import { useCallback } from "react";
 import { STATUS } from "./constants";
 
 function Tasks({ data, reTasks, pendingRemoveTasks }) {
@@ -12,7 +11,7 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
   const [editTask, setEdittask] = useState(false);
   const [valueInputTask, setValueInputTask] = useState(data.title);
 
-  const formatDate = useCallback((date) => {
+  const formatDate = (date) => {
     return (
       date.getFullYear() +
       "-" +
@@ -24,7 +23,7 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
       ":" +
       date.getMinutes()
     );
-  }, []);
+  };
 
   const [defaultCate] = useState(
     data?.categories.map((item) => ({
@@ -54,17 +53,14 @@ function Tasks({ data, reTasks, pendingRemoveTasks }) {
     return list;
   }, [data.status, listCategories]);
 
-  const handleUpdateTask = useCallback(
-    async (data, id) => {
-      const response = await dispatch(updateTask({ id: id, datatask: data }));
-      if (updateTask.fulfilled.match(response)) {
-        dispatch(getTasks(paramTask));
-      } else {
-        alert(response.payload);
-      }
-    },
-    [dispatch, paramTask]
-  );
+  const handleUpdateTask = async (data, id) => {
+    const response = await dispatch(updateTask({ id: id, datatask: data }));
+    if (updateTask.fulfilled.match(response)) {
+      dispatch(getTasks(paramTask));
+    } else {
+      alert(response.payload);
+    }
+  };
 
   const updateTitleTask = async () => {
     dataUpdateTask.current = {
